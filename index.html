@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Cafeteria Ordering - HCI Mobile Prototype</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Single+Day&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="mode-polished">
+  <!-- Top Control Bar (HCI Prototype Controls) -->
+  <div class="prototype-control-bar">
+    <div class="brand-badge">
+      <span class="dot"></span> Smart Cafeteria HCI Prototype
+    </div>
+    <div class="toggle-group">
+      <label class="toggle-label">
+        <span>Balsamiq Wireframe Mode</span>
+        <input type="checkbox" id="wireframeToggle">
+        <span class="slider"></span>
+      </label>
+      <label class="toggle-label">
+        <span>V2 Iteration (V1 vs V2)</span>
+        <input type="checkbox" id="versionToggle" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Main Mobile Device Frame -->
+  <div class="mobile-frame-wrapper">
+    <div class="mobile-device">
+      <!-- Status Bar -->
+      <div class="status-bar">
+        <span class="time" id="clock">12:30</span>
+        <div class="notch"></div>
+        <div class="icons">
+          <span>📶</span>
+          <span>📡</span>
+          <span>🔋 94%</span>
+        </div>
+      </div>
+
+      <!-- App Header -->
+      <header class="app-header" id="appHeader">
+        <button class="icon-btn back-btn" id="headerBackBtn" style="display: none;">←</button>
+        <div class="header-title" id="headerTitle">Smart Cafeteria</div>
+        <button class="icon-btn search-trigger-btn" id="headerSearchBtn">🔍</button>
+      </header>
+
+      <!-- App Notification Toast Container -->
+      <div id="toastContainer" class="toast-container"></div>
+
+      <!-- Screens Container -->
+      <main class="screens-container" id="screensContainer">
+
+        <!-- SCREEN 1: SPLASH SCREEN -->
+        <section class="screen" id="screenSplash">
+          <div class="splash-content">
+            <div class="splash-logo">🍱</div>
+            <h1 class="splash-title">Smart Cafeteria</h1>
+            <p class="splash-subtitle">Order ahead, skip the queue, and collect your meal when it's ready.</p>
+            <div class="splash-actions">
+              <button class="btn btn-primary" onclick="app.navigateTo('screenHome')">Get Started</button>
+              <button class="btn btn-secondary" onclick="app.navigateTo('screenLogin')">Sign In</button>
+            </div>
+            <p class="splash-footer">University HCI Assignment Demo v2.0</p>
+          </div>
+        </section>
+
+        <!-- SCREEN 2: LOGIN / REGISTER -->
+        <section class="screen" id="screenLogin" style="display:none;">
+          <div class="auth-wrapper">
+            <div class="auth-tabs">
+              <button class="auth-tab active" onclick="app.switchAuthTab('login')">Sign In</button>
+              <button class="auth-tab" onclick="app.switchAuthTab('register')">Register</button>
+            </div>
+            <form id="authForm" onsubmit="event.preventDefault(); app.handleAuth();">
+              <div class="form-group">
+                <label>University Email / Student ID</label>
+                <input type="text" class="input-control" value="alex.chen@univ.edu" required>
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="input-control" value="••••••••" required>
+              </div>
+              <div class="form-options">
+                <label><input type="checkbox" checked> Remember me</label>
+                <a href="#" onclick="alert('Password reset link sent to your university email.')">Forgot Password?</a>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            </form>
+          </div>
+        </section>
+
+        <!-- SCREEN 3: HOME DASHBOARD -->
+        <section class="screen" id="screenHome" style="display:none;">
+          <!-- Location Picker Bar -->
+          <div class="location-bar">
+            <span>📍 Pickup Venue:</span>
+            <select id="homeVenueSelect" class="venue-select" onchange="app.changeVenue(this.value)">
+              <option value="Main Cafeteria">Main Cafeteria (Express Window)</option>
+              <option value="Student Centre">Student Centre Food Court</option>
+              <option value="Engineering Dining">Engineering Snack Bar</option>
+              <option value="Staff Dining">Faculty & Staff Dining Room</option>
+            </select>
+          </div>
+
+          <!-- Active Order Card (V2 Improvement) -->
+          <div class="active-order-banner" id="activeOrderBanner" onclick="app.navigateTo('screenTracking')">
+            <div class="active-order-header">
+              <span class="pulse-dot"></span>
+              <span class="banner-tag">ACTIVE ORDER #1045</span>
+              <span class="est-time" id="bannerEstTime">Est: 10 mins</span>
+            </div>
+            <div class="active-order-body">
+              <div class="order-info">
+                <strong>Grilled Chicken & Savory Rice</strong>
+                <span>Collection Slot: 12:30 PM @ Main Cafeteria</span>
+              </div>
+              <div class="order-stepper-mini">
+                <div class="step-dot completed">✓</div>
+                <div class="step-line active"></div>
+                <div class="step-dot active">2</div>
+                <div class="step-line"></div>
+                <div class="step-dot">3</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search meals, drinks, combos..." onkeyup="app.filterMeals(this.value)">
+            <button class="filter-btn" onclick="app.openFilterModal()">⚙️</button>
+          </div>
+
+          <!-- Category Pills -->
+          <div class="categories-scroll" id="categoriesContainer">
+            <button class="cat-pill active" onclick="app.selectCategory('All')">All</button>
+            <button class="cat-pill" onclick="app.selectCategory('Lunch')">🍱 Lunch</button>
+            <button class="cat-pill" onclick="app.selectCategory('Breakfast')">🍳 Breakfast</button>
+            <button class="cat-pill" onclick="app.selectCategory('Snacks')">🍟 Snacks</button>
+            <button class="cat-pill" onclick="app.selectCategory('Drinks')">🥤 Drinks</button>
+            <button class="cat-pill" onclick="app.selectCategory('Combos')">🔥 Deals</button>
+          </div>
+
+          <!-- Deals & Promotions Carousel -->
+          <div class="section-title">
+            <h3>🔥 Today's Campus Specials</h3>
+          </div>
+          <div class="promo-card" onclick="app.openMealDetails('m1')">
+            <div class="promo-badge">20% OFF</div>
+            <div class="promo-info">
+              <h4>Student Combo Deal</h4>
+              <p>Grilled Chicken + Rice + Fresh Mango Juice</p>
+              <div class="promo-price"><del>KSh 380</del> <strong>KSh 300</strong></div>
+            </div>
+          </div>
+
+          <!-- Quick Reorder Tray -->
+          <div class="section-title">
+            <h3>⚡ Quick Reorder</h3>
+          </div>
+          <div class="quick-reorder-tray">
+            <div class="quick-card" onclick="app.quickReorder('m1')">
+              <span class="quick-icon">🍱</span>
+              <div class="quick-text">
+                <strong>Chicken & Rice</strong>
+                <span>KSh 250</span>
+              </div>
+              <button class="btn-mini">+ Reorder</button>
+            </div>
+            <div class="quick-card" onclick="app.quickReorder('m3')">
+              <span class="quick-icon">🥤</span>
+              <div class="quick-text">
+                <strong>Fresh Mango Juice</strong>
+                <span>KSh 80</span>
+              </div>
+              <button class="btn-mini">+ Reorder</button>
+            </div>
+          </div>
+
+          <!-- Recommended Meals Grid -->
+          <div class="section-title">
+            <h3>Recommended for You</h3>
+          </div>
+          <div class="meals-grid" id="homeMealsGrid">
+            <!-- Meal Cards Rendered via JS -->
+          </div>
+        </section>
+
+        <!-- SCREEN 4: MENU SCREEN -->
+        <section class="screen" id="screenMenu" style="display:none;">
+          <div class="search-box">
+            <input type="text" placeholder="Search menu..." onkeyup="app.filterMeals(this.value)">
+          </div>
+          <div class="categories-scroll">
+            <button class="cat-pill active" onclick="app.selectCategory('All')">All Items</button>
+            <button class="cat-pill" onclick="app.selectCategory('Lunch')">Lunch</button>
+            <button class="cat-pill" onclick="app.selectCategory('Breakfast')">Breakfast</button>
+            <button class="cat-pill" onclick="app.selectCategory('Snacks')">Snacks</button>
+            <button class="cat-pill" onclick="app.selectCategory('Drinks')">Drinks</button>
+          </div>
+          <div class="meals-grid" id="fullMenuGrid">
+            <!-- Menu Cards Rendered via JS -->
+          </div>
+        </section>
+
+        <!-- SCREEN 5: MEAL DETAILS -->
+        <section class="screen" id="screenMealDetails" style="display:none;">
+          <div class="meal-detail-hero" id="detailHero">
+            <div class="hero-icon" id="detailEmoji">🍱</div>
+            <button class="fav-heart-btn" id="detailFavBtn" onclick="app.toggleFavoriteCurrentDetail()">🤍</button>
+          </div>
+          <div class="meal-detail-body">
+            <div class="detail-header-row">
+              <h2 id="detailTitle">Grilled Chicken & Savory Rice</h2>
+              <div class="detail-price" id="detailPrice">KSh 250</div>
+            </div>
+            <div class="badges-row">
+              <span class="badge badge-success" id="detailStockBadge">Available</span>
+              <span class="badge badge-neutral">🔥 520 kcal</span>
+              <span class="badge badge-neutral">⏱️ 10 min prep</span>
+            </div>
+            <p class="detail-description" id="detailDesc">Freshly grilled marinated chicken breast served with steamed savory turmeric rice and fresh kitchen garden salad.</p>
+            
+            <div class="quantity-row">
+              <label>Quantity:</label>
+              <div class="stepper-control">
+                <button onclick="app.adjustDetailQty(-1)">-</button>
+                <span id="detailQty">1</span>
+                <button onclick="app.adjustDetailQty(1)">+</button>
+              </div>
+            </div>
+
+            <div class="detail-actions">
+              <button class="btn btn-secondary" onclick="app.openCustomizeModal()">⚙️ Customize Options</button>
+              <button class="btn btn-primary" id="detailAddToCartBtn" onclick="app.addCurrentDetailToCart()">Add to Cart - KSh 250</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCREEN 6: MEAL CUSTOMIZATION MODAL/SCREEN -->
+        <section class="screen" id="screenCustomize" style="display:none;">
+          <div class="customize-body">
+            <h3>Customize Your Meal</h3>
+            <p class="subtitle" id="customizeMealName">Grilled Chicken & Rice</p>
+
+            <!-- Portion Size -->
+            <div class="custom-group">
+              <label class="custom-title">Portion Size</label>
+              <label class="radio-option">
+                <input type="radio" name="portion" value="Standard" checked onchange="app.updateCustomizeTotal()">
+                <span>Standard Portion</span>
+                <strong>+ KSh 0</strong>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="portion" value="Large" onchange="app.updateCustomizeTotal()">
+                <span>Large Portion (+25% Extra)</span>
+                <strong>+ KSh 50</strong>
+              </label>
+            </div>
+
+            <!-- Add-ons -->
+            <div class="custom-group">
+              <label class="custom-title">Add Extra Ingredients</label>
+              <label class="checkbox-option">
+                <input type="checkbox" id="addSauce" value="Extra Sauce" onchange="app.updateCustomizeTotal()">
+                <span>Extra Creamy Garlic Sauce</span>
+                <strong>+ KSh 20</strong>
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" id="addEgg" value="Fried Egg" onchange="app.updateCustomizeTotal()">
+                <span>Pan-fried Egg</span>
+                <strong>+ KSh 30</strong>
+              </label>
+              <label class="checkbox-option">
+                <input type="checkbox" id="addAvocado" value="Avocado Slice" onchange="app.updateCustomizeTotal()">
+                <span>Fresh Avocado Slice</span>
+                <strong>+ KSh 40</strong>
+              </label>
+            </div>
+
+            <!-- Special Instructions -->
+            <div class="custom-group">
+              <label class="custom-title">Special Kitchen Instructions</label>
+              <textarea id="customInstructions" class="input-control" placeholder="e.g. No onions, dressing on the side..."></textarea>
+            </div>
+          </div>
+          <div class="customize-footer">
+            <button class="btn btn-primary btn-block" id="saveCustomizationBtn" onclick="app.confirmCustomization()">Save Customization - KSh 250</button>
+          </div>
+        </section>
+
+        <!-- SCREEN 7: SHOPPING CART -->
+        <section class="screen" id="screenCart" style="display:none;">
+          <div class="cart-wrapper">
+            <div id="cartItemsList" class="cart-items-list">
+              <!-- Cart Items Rendered via JS -->
+            </div>
+            
+            <div class="cart-summary" id="cartSummaryBlock">
+              <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="cartSubtotal">KSh 0</span>
+              </div>
+              <div class="summary-row">
+                <span>Service Fee</span>
+                <span>KSh 0</span>
+              </div>
+              <div class="summary-row total-row">
+                <strong>Total Amount</strong>
+                <strong id="cartTotal">KSh 0</strong>
+              </div>
+            </div>
+
+            <div class="cart-actions" id="cartActionsBlock">
+              <button class="btn btn-primary btn-block" onclick="app.navigateTo('screenTimeSelect')">Select Collection Time ➔</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCREEN 8: COLLECTION TIME & VENUE -->
+        <section class="screen" id="screenTimeSelect" style="display:none;">
+          <div class="checkout-step-body">
+            <div class="step-indicator">Step 2 of 4: Pickup Details</div>
+
+            <div class="custom-group">
+              <label class="custom-title">Select Collection Venue</label>
+              <div class="venue-chips">
+                <button class="chip active" onclick="app.setCheckoutVenue(this, 'Main Cafeteria')">🏫 Main Cafeteria</button>
+                <button class="chip" onclick="app.setCheckoutVenue(this, 'Student Centre')">🏛️ Student Centre</button>
+                <button class="chip" onclick="app.setCheckoutVenue(this, 'Engineering')">⚙️ Engineering</button>
+                <button class="chip" onclick="app.setCheckoutVenue(this, 'Staff Dining')">👔 Staff Dining</button>
+              </div>
+            </div>
+
+            <div class="custom-group">
+              <label class="custom-title">Select Collection Time Slot</label>
+              <p class="subtitle">Unavailable slots are greyed out to prevent kitchen over-capacity.</p>
+              <div class="time-slots-grid" id="timeSlotsGrid">
+                <button class="time-slot" onclick="app.selectTimeSlot(this, 'ASAP (~15 mins)')">⚡ ASAP (~15 mins)</button>
+                <button class="time-slot active" onclick="app.selectTimeSlot(this, '12:30 PM')">🕒 12:30 PM</button>
+                <button class="time-slot" onclick="app.selectTimeSlot(this, '12:45 PM')">🕒 12:45 PM</button>
+                <button class="time-slot" onclick="app.selectTimeSlot(this, '01:00 PM')">🕒 01:00 PM</button>
+                <button class="time-slot disabled">🕒 01:15 PM (Full)</button>
+                <button class="time-slot" onclick="app.selectTimeSlot(this, '01:30 PM')">🕒 01:30 PM</button>
+              </div>
+            </div>
+
+            <button class="btn btn-primary btn-block" onclick="app.navigateTo('screenPayment')">Proceed to Payment ➔</button>
+          </div>
+        </section>
+
+        <!-- SCREEN 9: PAYMENT INTERFACE -->
+        <section class="screen" id="screenPayment" style="display:none;">
+          <div class="checkout-step-body">
+            <div class="step-indicator">Step 3 of 4: Payment</div>
+            <div class="payment-banner">
+              <span>Amount Due:</span>
+              <h2 id="paymentTotalAmount">KSh 320</h2>
+            </div>
+
+            <div class="custom-group">
+              <label class="custom-title">Select Payment Method</label>
+              <label class="radio-option">
+                <input type="radio" name="paymethod" value="M-Pesa" checked onchange="app.switchPayMethod('mpesa')">
+                <span>📱 M-Pesa Mobile Money</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="paymethod" value="Campus Card" onchange="app.switchPayMethod('campus')">
+                <span>💳 Campus Smart Card</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="paymethod" value="Card" onchange="app.switchPayMethod('card')">
+                <span>💳 Credit / Debit Card</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="paymethod" value="Cash" onchange="app.switchPayMethod('cash')">
+                <span>💵 Pay at Express Collection</span>
+              </label>
+            </div>
+
+            <!-- Dynamic Payment Form -->
+            <div class="form-group" id="payInputGroup">
+              <label id="payInputLabel">M-Pesa Phone Number</label>
+              <input type="text" id="payInputField" class="input-control" value="0712 345 678">
+            </div>
+
+            <button class="btn btn-primary btn-block" onclick="app.processPayment()">Pay & Confirm Order</button>
+          </div>
+        </section>
+
+        <!-- SCREEN 10: ORDER CONFIRMATION -->
+        <section class="screen" id="screenConfirmation" style="display:none;">
+          <div class="confirmation-body">
+            <div class="success-icon">🎉</div>
+            <h2>Order Placed Successfully!</h2>
+            <div class="order-number-badge">Order #1045</div>
+            
+            <div class="summary-card">
+              <div class="card-row">
+                <span>Collection Venue:</span>
+                <strong id="confVenue">Main Cafeteria (Express Window)</strong>
+              </div>
+              <div class="card-row">
+                <span>Target Pickup Time:</span>
+                <strong id="confTime">12:30 PM</strong>
+              </div>
+              <div class="card-row">
+                <span>Payment Method:</span>
+                <strong id="confPayment">M-Pesa (KSh 320)</strong>
+              </div>
+            </div>
+
+            <div class="qr-box">
+              <div class="qr-placeholder">📱 [QR BARCODE #1045]</div>
+              <p>Show this code at the Express Pickup shelf</p>
+            </div>
+
+            <button class="btn btn-primary btn-block" onclick="app.navigateTo('screenTracking')">Track Order Status Live ➔</button>
+            <button class="btn btn-secondary btn-block" onclick="app.navigateTo('screenHome')">Back to Home</button>
+          </div>
+        </section>
+
+        <!-- SCREEN 11: ORDER TRACKING (STEPPER) -->
+        <section class="screen" id="screenTracking" style="display:none;">
+          <div class="tracking-wrapper">
+            <div class="tracking-header-card">
+              <h3>Order #1045 Tracking</h3>
+              <p>Main Cafeteria • Pickup Slot: 12:30 PM</p>
+            </div>
+
+            <!-- Visual 4-Stage Stepper -->
+            <div class="vertical-stepper">
+              <div class="stepper-item completed" id="step1">
+                <div class="step-circle">✓</div>
+                <div class="step-content">
+                  <strong>1. Order Received</strong>
+                  <span>12:14 PM - Kitchen accepted order</span>
+                </div>
+              </div>
+              <div class="stepper-item active" id="step2">
+                <div class="step-circle">🍳</div>
+                <div class="step-content">
+                  <strong>2. Preparing in Kitchen</strong>
+                  <span id="prepSubtext">Chef is grilling chicken (Est. 8 mins)</span>
+                </div>
+              </div>
+              <div class="stepper-item" id="step3">
+                <div class="step-circle">🔔</div>
+                <div class="step-content">
+                  <strong>3. Ready for Collection</strong>
+                  <span>Waiting on Pickup Shelf B3</span>
+                </div>
+              </div>
+              <div class="stepper-item" id="step4">
+                <div class="step-circle">📦</div>
+                <div class="step-content">
+                  <strong>4. Order Collected</strong>
+                  <span>Food picked up by user</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Demo Simulation Button -->
+            <div class="demo-controls">
+              <button class="btn btn-secondary btn-block" onclick="app.simulateNextStatus()">🧪 Simulate Next Kitchen Stage</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCREEN 12: READY FOR COLLECTION -->
+        <section class="screen" id="screenReady" style="display:none;">
+          <div class="ready-wrapper">
+            <div class="ready-badge">🔔 YOUR MEAL IS READY!</div>
+            <h2>Pickup Shelf B3</h2>
+            <p>Main Cafeteria Express Window</p>
+
+            <div class="barcode-card">
+              <div class="barcode-graphic">||| | |||| | ||| || |||</div>
+              <div class="barcode-number">ORDER ID: #1045</div>
+            </div>
+
+            <div class="instruction-box">
+              <p>👉 Walk to Express Pickup Window B3, show your barcode to the scanner, and grab your tray!</p>
+            </div>
+
+            <button class="btn btn-primary btn-block" onclick="app.confirmCollection()">Confirm I Have Collected My Meal</button>
+          </div>
+        </section>
+
+        <!-- SCREEN 13: ORDER HISTORY -->
+        <section class="screen" id="screenHistory" style="display:none;">
+          <div class="history-tabs">
+            <button class="history-tab active" onclick="app.switchHistoryTab('past')">Past Receipts</button>
+            <button class="history-tab" onclick="app.switchHistoryTab('active')">Active Orders</button>
+          </div>
+
+          <div id="historyListContainer">
+            <!-- Order Cards Rendered via JS -->
+          </div>
+        </section>
+
+        <!-- SCREEN 14: FAVORITES -->
+        <section class="screen" id="screenFavorites" style="display:none;">
+          <div class="section-title">
+            <h3>❤️ Saved Favorite Meals</h3>
+          </div>
+          <div class="meals-grid" id="favoritesGrid">
+            <!-- Favorite Cards Rendered via JS -->
+          </div>
+        </section>
+
+        <!-- SCREEN 15: PROFILE & SETTINGS -->
+        <section class="screen" id="screenProfile" style="display:none;">
+          <div class="profile-card">
+            <div class="avatar">👨‍🎓</div>
+            <h3>Alex Chen</h3>
+            <p>Student ID: #8839201 • Computer Science</p>
+          </div>
+
+          <div class="settings-list">
+            <div class="settings-item" onclick="alert('Preferred Venue updated.')">
+              <span>📍 Preferred Cafeteria</span>
+              <strong>Main Cafeteria ❯</strong>
+            </div>
+            <div class="settings-item" onclick="alert('Payment settings opened.')">
+              <span>💳 Saved Payment Methods</span>
+              <strong>M-Pesa (0712...) ❯</strong>
+            </div>
+            <div class="settings-item" onclick="alert('Dietary preferences set.')">
+              <span>🥗 Dietary Preferences</span>
+              <strong>None ❯</strong>
+            </div>
+            <div class="settings-item" onclick="app.navigateTo('screenHistory')">
+              <span>📜 Past Order Receipts</span>
+              <strong>View All ❯</strong>
+            </div>
+            <div class="settings-item" onclick="alert('Help FAQ: Contact cafeteria-support@univ.edu')">
+              <span>❓ Help & Support FAQ</span>
+              <strong>FAQ ❯</strong>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Bottom Navigation Bar -->
+      <nav class="bottom-nav" id="bottomNav">
+        <button class="nav-item active" id="navHome" onclick="app.navigateTo('screenHome')">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-item" id="navMenu" onclick="app.navigateTo('screenMenu')">
+          <span class="nav-icon">🍱</span>
+          <span class="nav-label">Menu</span>
+        </button>
+        <button class="nav-item" id="navOrders" onclick="app.navigateTo('screenHistory')">
+          <span class="nav-icon">📜</span>
+          <span class="nav-label">Orders</span>
+        </button>
+        <button class="nav-item" id="navFavorites" onclick="app.navigateTo('screenFavorites')">
+          <span class="nav-icon">❤️</span>
+          <span class="nav-label">Favorites</span>
+        </button>
+        <button class="nav-item" id="navProfile" onclick="app.navigateTo('screenProfile')">
+          <span class="nav-icon">👤</span>
+          <span class="nav-label">Profile</span>
+        </button>
+      </nav>
+
+    </div>
+  </div>
+
+  <!-- Rating & Feedback Modal -->
+  <div class="modal" id="ratingModal" style="display:none;">
+    <div class="modal-content">
+      <h3>How was your meal?</h3>
+      <div class="star-rating">
+        <span onclick="app.setRating(1)">★</span>
+        <span onclick="app.setRating(2)">★</span>
+        <span onclick="app.setRating(3)">★</span>
+        <span onclick="app.setRating(4)">★</span>
+        <span onclick="app.setRating(5)" class="active">★</span>
+      </div>
+      <textarea id="feedbackText" class="input-control" placeholder="Add optional comments for the cafeteria kitchen..."></textarea>
+      <button class="btn btn-primary btn-block" onclick="app.submitRating()">Submit Feedback</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
