@@ -774,7 +774,48 @@ class CafeteriaApp {
     this.closeFilterModal();
     this.showToast(`Filters Applied: ${filtered.length} meals found under KSh ${maxPrice}`);
   }
+
+  switchAuthTab(mode) {
+    const heading = document.getElementById('authHeading');
+    const subheading = document.getElementById('authSubheading');
+    const tabLogin = document.getElementById('tabLoginBtn');
+    const tabReg = document.getElementById('tabRegBtn');
+    const nameGroup = document.getElementById('regNameGroup');
+    const options = document.getElementById('loginOptions');
+    const submitBtn = document.getElementById('authSubmitBtn');
+
+    if (mode === 'register') {
+      if (heading) heading.innerText = 'Create Account';
+      if (subheading) subheading.innerText = 'Register for fast cafeteria ordering';
+      if (tabLogin) tabLogin.classList.remove('active');
+      if (tabReg) tabReg.classList.add('active');
+      if (nameGroup) nameGroup.style.display = 'block';
+      if (options) options.style.display = 'none';
+      if (submitBtn) submitBtn.innerText = 'Create Account';
+    } else {
+      if (heading) heading.innerText = 'Welcome Back';
+      if (subheading) subheading.innerText = 'Sign in to your cafeteria account';
+      if (tabReg) tabReg.classList.remove('active');
+      if (tabLogin) tabLogin.classList.add('active');
+      if (nameGroup) nameGroup.style.display = 'none';
+      if (options) options.style.display = 'flex';
+      if (submitBtn) submitBtn.innerText = 'Log In';
+    }
+  }
+
+  handleAuth() {
+    const email = document.getElementById('authEmailInput')?.value || 'alex.chen@univ.edu';
+    const isRegister = document.getElementById('tabRegBtn')?.classList.contains('active');
+
+    if (isRegister) {
+      this.showToast(`Account created for ${email}! Welcome to Smart Cafeteria.`);
+    } else {
+      this.showToast(`Signed in successfully as ${email}`);
+    }
+    this.navigateTo('screenHome');
+  }
 }
 
 // Global Instance
 window.app = new CafeteriaApp();
+
