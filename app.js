@@ -313,6 +313,7 @@ class CafeteriaApp {
     this.renderMealsGrid('fullMenuGrid', sampleMeals);
     this.renderFavoritesGrid();
     this.renderHistoryList();
+    this.renderCodeGraphics('#1045');
     this.setupEventListeners();
     this.updateClock();
     setInterval(() => this.updateClock(), 30000);
@@ -764,8 +765,86 @@ class CafeteriaApp {
       
       this.activeOrder.statusStep = 1;
       this.updateStepperVisuals();
+      this.renderCodeGraphics('#1045');
       this.navigateTo('screenConfirmation');
     }, 1000);
+  }
+
+  generateSVGQRCode(orderNum) {
+    const matrix = [
+      [1,1,1,1,1,1,1,0,1,0,1,1,0,0,1,1,1,1,1,1,1],
+      [1,0,0,0,0,0,1,0,0,1,0,1,1,0,1,0,0,0,0,0,1],
+      [1,0,1,1,1,0,1,0,1,0,1,0,0,0,1,0,1,1,1,0,1],
+      [1,0,1,1,1,0,1,0,0,1,1,0,1,0,1,0,1,1,1,0,1],
+      [1,0,1,1,1,0,1,0,1,1,0,1,0,0,1,0,1,1,1,0,1],
+      [1,0,0,0,0,0,1,0,1,0,1,0,1,0,1,0,0,0,0,0,1],
+      [1,1,1,1,1,1,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1],
+      [0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,0],
+      [1,0,1,1,0,1,1,1,0,1,1,0,1,1,0,1,1,0,1,0,1],
+      [0,1,0,1,1,0,0,1,1,0,0,1,0,1,1,0,1,1,0,1,0],
+      [1,0,1,0,1,1,1,0,1,1,1,0,1,0,1,1,0,1,0,1,1],
+      [0,1,0,0,1,0,1,1,0,1,0,1,1,0,0,1,1,0,1,0,0],
+      [1,1,1,0,0,1,0,0,1,0,1,0,0,1,1,0,0,1,0,1,1],
+      [0,0,0,0,0,0,0,0,1,0,1,1,0,1,0,1,1,0,1,0,0],
+      [1,1,1,1,1,1,1,0,1,1,0,0,1,0,1,0,1,0,1,1,1],
+      [1,0,0,0,0,0,1,0,0,1,1,1,0,1,0,0,0,1,0,1,0],
+      [1,0,1,1,1,0,1,0,1,0,0,1,1,0,1,1,1,0,0,0,1],
+      [1,0,1,1,1,0,1,0,1,1,0,1,0,1,1,0,1,1,1,0,0],
+      [1,0,1,1,1,0,1,0,0,0,1,1,1,0,1,0,0,1,0,1,1],
+      [1,0,0,0,0,0,1,0,1,1,0,0,0,1,0,1,1,0,1,0,1],
+      [1,1,1,1,1,1,1,0,1,0,1,1,1,0,1,1,0,1,1,1,1]
+    ];
+
+    let rects = '';
+    const size = 6;
+    for (let r = 0; r < 21; r++) {
+      for (let c = 0; c < 21; c++) {
+        if (matrix[r][c] === 1) {
+          rects += `<rect x="${c * size}" y="${r * size}" width="${size}" height="${size}" fill="#0f172a" />`;
+        }
+      }
+    }
+    return `
+      <div style="background:#fff; padding:10px; border-radius:12px; display:inline-block; border:1px solid #cbd5e1; box-shadow:0 4px 12px rgba(0,0,0,0.08); text-align:center;">
+        <svg width="126" height="126" viewBox="0 0 126 126">${rects}</svg>
+        <div style="font-size:11px; font-weight:700; color:#0f172a; margin-top:4px; font-family:monospace;">PICKUP QR ${orderNum}</div>
+      </div>
+    `;
+  }
+
+  generateSVGBarcode(orderNum) {
+    const bars = [2,1,3,1,2,2,1,1,3,2,1,2,3,1,1,2,1,3,2,1,1,2,3,1,2,1,1,3,2,2,1,1,2,3,1,2,1,2,3,1,1,3,2,1,2,1,1,2,3,1,2,2,1];
+    let x = 10;
+    let paths = '';
+    bars.forEach((w, i) => {
+      if (i % 2 === 0) {
+        paths += `<rect x="${x}" y="10" width="${w * 2}" height="45" fill="#0f172a" />`;
+      }
+      x += w * 2.5;
+    });
+    return `
+      <div style="background:#fff; padding:10px 14px; border-radius:10px; display:inline-block; border:1px solid #cbd5e1; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <svg width="220" height="60" viewBox="0 0 220 60">${paths}</svg>
+        <div style="font-family:monospace; font-weight:800; font-size:13px; letter-spacing:3px; color:#0f172a; margin-top:2px;">CODE128: ${orderNum}</div>
+      </div>
+    `;
+  }
+
+  renderCodeGraphics(orderNum) {
+    const confQR = document.getElementById('confQRCodeContainer');
+    if (confQR) {
+      confQR.innerHTML = this.generateSVGQRCode(orderNum) + '<div style="margin-top:6px;">' + this.generateSVGBarcode(orderNum) + '</div>';
+    }
+
+    const readyBarcode = document.getElementById('readyBarcodeContainer');
+    if (readyBarcode) {
+      readyBarcode.innerHTML = this.generateSVGBarcode(orderNum);
+    }
+
+    const readyQR = document.getElementById('readyQRCodeContainer');
+    if (readyQR) {
+      readyQR.innerHTML = this.generateSVGQRCode(orderNum);
+    }
   }
 
   simulateNextStatus() {

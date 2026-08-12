@@ -481,8 +481,10 @@
             </div>
 
             <div class="qr-box">
-              <div class="qr-placeholder">📱 [QR BARCODE #1045]</div>
-              <p>Show this code at the Express Pickup shelf</p>
+              <div id="confQRCodeContainer" style="display:flex; justify-content:center; align-items:center; flex-direction:column; gap:8px;">
+                <!-- Dynamically rendered visual QR Code & Barcode -->
+              </div>
+              <p style="margin-top:10px; font-weight:600; font-size:12px; color:var(--text-dark);">Scan at Cafeteria Express Pickup Scanner</p>
             </div>
 
             <button class="btn btn-primary btn-block" onclick="app.navigateTo('screenTracking')">Track Order Status Live ➔</button>
@@ -547,8 +549,12 @@
             <p>Main Cafeteria Express Window</p>
 
             <div class="barcode-card">
-              <div class="barcode-graphic">||| | |||| | ||| || |||</div>
-              <div class="barcode-number">ORDER ID: #1045</div>
+              <div id="readyBarcodeContainer">
+                <!-- Dynamically rendered visual Barcode -->
+              </div>
+              <div id="readyQRCodeContainer" style="margin-top:12px; display:flex; justify-content:center;">
+                <!-- Dynamically rendered visual QR Code -->
+              </div>
             </div>
 
             <div class="instruction-box">
