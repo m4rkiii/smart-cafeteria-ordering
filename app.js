@@ -358,6 +358,10 @@ class CafeteriaApp {
       this.currentScreen = screenId;
     }
 
+    if (screenId === 'screenConfirmation' || screenId === 'screenReady') {
+      this.renderCodeGraphics(this.activeOrder.id);
+    }
+
     const backBtn = document.getElementById('headerBackBtn');
     const title = document.getElementById('headerTitle');
 
