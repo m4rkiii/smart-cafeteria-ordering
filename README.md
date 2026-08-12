@@ -2,9 +2,17 @@
 > **Human–Computer Interaction (HCI) Group Term Assignment**  
 > *Core Proposition: "Order ahead, skip the queue, and collect your meal when it's ready."*
 
-[![Prototype](https://img.shields.io/badge/Prototype-Interactive%20Mobile%20Web%20%26%20Balsamiq-2563eb)](index.html)
+[![Live Prototype](https://img.shields.io/badge/Live%20Prototype-GitHub%20Pages-2563eb)](https://m4rkiii.github.io/smart-cafeteria-ordering/)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-181717)](https://github.com/m4rkiii/smart-cafeteria-ordering)
 [![HCI Heuristics](https://img.shields.io/badge/HCI%20Heuristics-Nielsen's%2010-059669)](docs/requirements.md)
 [![SUS Score](https://img.shields.io/badge/Usability%20Score-86.5%2F100-7c3aed)](usability-testing/findings.md)
+
+---
+
+## 🌐 Prototype Links
+- **🌐 Live Web Prototype (GitHub Pages):** [https://m4rkiii.github.io/smart-cafeteria-ordering/](https://m4rkiii.github.io/smart-cafeteria-ordering/)
+- **📁 GitHub Source Code:** [https://github.com/m4rkiii/smart-cafeteria-ordering](https://github.com/m4rkiii/smart-cafeteria-ordering)
+- **🔀 Latest Commit:** [https://github.com/m4rkiii/smart-cafeteria-ordering/commit/1aa2cc9](https://github.com/m4rkiii/smart-cafeteria-ordering/commit/1aa2cc9)
 
 ---
 
@@ -36,44 +44,15 @@ The **Smart Cafeteria Ordering Mobile Application** is an interactive mobile pro
 
 ## 🚀 Key Features
 
-1. **Home Dashboard:** Search bar, category filter pills, deals carousel, quick reorder tray, and **Active Order Banner**.
-2. **Menu & Stock Badges:** Category tabs (*Lunch, Drinks, Combos*) with clear *Available*, *Low Stock*, and *Sold Out* tags.
-3. **Meal Customization:** Interactive modal for portion size selection, add-on checkboxes, chef instructions, and real-time total price updating.
+1. **Home Dashboard:** Search bar, category filter pills, deals carousel, quick reorder tray, loyalty point balance, and **Active Order Banner**.
+2. **Menu & Stock Badges (15+ Items):** Category tabs (*Lunch, Breakfast, Snacks, Drinks, Veggie, Combos*) with clear *Available*, *Low Stock*, and *Sold Out* tags.
+3. **Meal Customization & Nutrition:** Portion size selection, add-on checkboxes, chef instructions, dynamic total price updating, and nutrition breakdown cards (protein, carbs, fats).
 4. **Scheduled Pickup Slot Selection:** Select collection venue (*Main Dining*, *Engineering*, etc.) and time slot (*12:30 PM*, *1:00 PM*).
 5. **Order Tracking Stepper:** Real-time visual progress bar: `Received` ➔ `Preparing` ➔ `Ready for Collection` ➔ `Collected`.
 6. **Express Pickup Code:** High-contrast QR code and pickup PIN for 20-second counter pickup.
 7. **1-Tap Express Reordering:** Instant re-order capability from past Order History receipts.
-
----
-
-## 🎨 Interactive Web Prototype & Balsamiq Assets
-The repository contains both Balsamiq low-fidelity wireframe specifications and a zero-dependency interactive web application:
-
-- **Launch Interactive Web App:** Open [`index.html`](index.html) in any browser to test all 15 screens and 3 user scenarios live.
-- **Balsamiq Screen Specifications:** Detailed wireframe definitions for all 15 screens in [`wireframes/balsamiq/balsamiq_wireframes.md`](wireframes/balsamiq/balsamiq_wireframes.md).
-
----
-
-## 📊 User Research & Usability Testing Summary
-
-### User Research (N = 5 Campus Participants)
-- **Average Peak Wait Time:** 24.6 minutes.
-- **Mobile Pre-Ordering Adoption Intent:** 100% positive intent.
-- **Preferred Payment Method:** 60% M-Pesa, 20% Campus Card, 20% Pay at Collection.
-
-### Usability Testing & Iteration (V1 vs V2)
-Usability testing was conducted with 5 representative users across 5 core task scenarios:
-
-| Metric | Prototype Version 1 | Prototype Version 2 (Revised) | Improvement |
-|---|---|---|---|
-| **Task Completion Rate** | 76% | **100%** | **+24%** |
-| **Average Task Completion Time** | 84 seconds | **48 seconds** | **43% faster** |
-| **System Usability Scale (SUS)** | **68.5 / 100** | **86.5 / 100** | **+18.0 pts (Excellent)** |
-
-#### Key Design Improvements (V1 ➔ V2):
-- **Active Order Card:** Moved active order status to top of Home Dashboard for immediate status visibility.
-- **Dedicated Time Slot Screen:** Separated Collection Time selection into a mandatory checkout step to eliminate payment error states.
-- **Front-End Error Prevention:** Disabled touch targets for *Sold Out* items directly on the menu screen.
+8. **Campus Loyalty Rewards:** Redeem 100 points for a KSh 50 discount during checkout.
+9. **Digital Receipts:** View itemized proof of purchase with tax breakdown and loyalty points earned.
 
 ---
 
@@ -112,20 +91,3 @@ smart-cafeteria/
     ├── final-report/                   # Comprehensive Final HCI Term Assignment Report
     └── presentation/                   # Group Presentation Slide Deck Outline
 ```
-
----
-
-## 🤝 Team Member Roles & Contributions
-
-| Member / Role | Primary Responsibilities | Major Deliverables |
-|---|---|---|
-| **Project Lead** | Project coordination, task delegation, HCI timeline management | Project Plan, Final Presentation |
-| **UX Researcher** | User research, questionnaire design, participant interviewing | Questionnaire, Findings, Personas |
-| **UX Designer** | Information architecture, user journey mapping, task flows | User Journeys, Task Flows, Sketches |
-| **Balsamiq Designer 1** | Wireframing Home, Menu, Search, & Categories | Screens 1, 2, 3, 4 |
-| **Balsamiq Designer 2** | Wireframing Customization, Cart, & Checkout | Screens 5, 6, 7, 8, 9, 10 |
-| **Balsamiq Designer 3** | Wireframing Tracking, History, Favorites, & Profile | Screens 11, 12, 13, 14, 15 |
-| **Usability Test Lead**| Usability testing protocol execution, SUS score calculation | Test Plan, SUS Analysis, Recommendations |
-| **Documentation Lead**| PRD synthesis, final report compilation, README formatting | PRD, Final Report, Requirements |
-| **GitHub Manager** | Repository structure, code versioning, GFM markdown compliance | Repository Layout, Iterations Log |
-| **Presentation Lead**| Final slide deck preparation, prototype demonstration script | Slide Deck, Presentation Script |
