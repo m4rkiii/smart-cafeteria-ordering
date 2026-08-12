@@ -322,24 +322,12 @@
               </label>
             </div>
 
-            <!-- Add-ons -->
-            <div class="custom-group">
-              <label class="custom-title">Add Extra Ingredients</label>
-              <label class="checkbox-option">
-                <input type="checkbox" id="addSauce" value="Extra Sauce" onchange="app.updateCustomizeTotal()">
-                <span>Extra Creamy Garlic Sauce</span>
-                <strong>+ KSh 20</strong>
-              </label>
-              <label class="checkbox-option">
-                <input type="checkbox" id="addEgg" value="Fried Egg" onchange="app.updateCustomizeTotal()">
-                <span>Pan-fried Egg</span>
-                <strong>+ KSh 30</strong>
-              </label>
-              <label class="checkbox-option">
-                <input type="checkbox" id="addAvocado" value="Avocado Slice" onchange="app.updateCustomizeTotal()">
-                <span>Fresh Avocado Slice</span>
-                <strong>+ KSh 40</strong>
-              </label>
+            <!-- Add-ons (Dish Specific) -->
+            <div class="custom-group" id="dynamicAddonsGroup">
+              <label class="custom-title" id="addonsGroupTitle">Dish Add-Ons & Extras</label>
+              <div id="dynamicAddonsContainer">
+                <!-- Rendered dynamically in app.js per dish -->
+              </div>
             </div>
 
             <!-- Special Instructions -->

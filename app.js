@@ -1,6 +1,6 @@
 /* ==========================================================================
-   SMART CAFETERIA ORDERING MOBILE APPLICATION - JS STATE ENGINE v2.5
-   15+ Varied Menu Items, Loyalty Rewards, Filters, & Digital Receipts
+   SMART CAFETERIA ORDERING MOBILE APPLICATION - JS STATE ENGINE v2.6
+   Dish-Specific Add-Ons & Extras (Lentils -> Chapati, Chicken -> Garlic Sauce, etc.)
    ========================================================================== */
 
 const sampleMeals = [
@@ -14,7 +14,13 @@ const sampleMeals = [
     prepTime: '10 min',
     stock: 'Available',
     protein: '38g', carbs: '62g', fats: '12g', tag: 'Halal',
-    description: 'Freshly grilled marinated chicken breast served with steamed savory turmeric rice and fresh garden salad.'
+    description: 'Freshly grilled marinated chicken breast served with steamed savory turmeric rice and fresh garden salad.',
+    addons: [
+      { name: 'Extra Garlic Herb Sauce', price: 20 },
+      { name: 'Extra Steamed Turmeric Rice', price: 40 },
+      { name: 'Pan-fried Egg', price: 30 },
+      { name: 'Fresh Avocado Slice', price: 40 }
+    ]
   },
   {
     id: 'm2',
@@ -26,7 +32,13 @@ const sampleMeals = [
     prepTime: '15 min',
     stock: 'Sold Out',
     protein: '32g', carbs: '75g', fats: '28g', tag: 'Combo',
-    description: '100% prime beef patty with melted cheese, lettuce, tomato, and seasoned crispy french fries.'
+    description: '100% prime beef patty with melted cheese, lettuce, tomato, and seasoned crispy french fries.',
+    addons: [
+      { name: 'Extra Melted Cheddar Cheese', price: 30 },
+      { name: 'Extra Crispy Bacon', price: 50 },
+      { name: 'Upgrade to Large Fries', price: 40 },
+      { name: 'Extra Beef Patty', price: 100 }
+    ]
   },
   {
     id: 'm3',
@@ -38,7 +50,12 @@ const sampleMeals = [
     prepTime: '3 min',
     stock: 'Available',
     protein: '1g', carbs: '32g', fats: '0g', tag: 'Vegan',
-    description: 'Freshly squeezed natural mango and passion fruit juice blend with zero added sugar.'
+    description: 'Freshly squeezed natural mango and passion fruit juice blend with zero added sugar.',
+    addons: [
+      { name: 'Add Organic Chia Seeds', price: 20 },
+      { name: 'Extra Passion Fruit Pulp', price: 30 },
+      { name: 'Upgrade to Large Glass', price: 30 }
+    ]
   },
   {
     id: 'm4',
@@ -50,7 +67,12 @@ const sampleMeals = [
     prepTime: '12 min',
     stock: 'Low Stock',
     protein: '14g', carbs: '58g', fats: '9g', tag: 'Veggie',
-    description: 'Wok-tossed egg noodles with crisp vegetables, sesame oil, and savory soy garlic sauce.'
+    description: 'Wok-tossed egg noodles with crisp vegetables, sesame oil, and savory soy garlic sauce.',
+    addons: [
+      { name: 'Add Pan-seared Tofu Cubes', price: 40 },
+      { name: 'Extra Chili Garlic Oil', price: 15 },
+      { name: 'Add Fried Egg', price: 30 }
+    ]
   },
   {
     id: 'm5',
@@ -62,7 +84,12 @@ const sampleMeals = [
     prepTime: '8 min',
     stock: 'Available',
     protein: '22g', carbs: '30g', fats: '18g', tag: 'Halal',
-    description: 'Three-egg fluffy omelette with diced bell peppers, onions, tomatoes, and toasted whole wheat bread.'
+    description: 'Three-egg fluffy omelette with diced bell peppers, onions, tomatoes, and toasted whole wheat bread.',
+    addons: [
+      { name: 'Extra Whole Wheat Toast (2 Slices)', price: 25 },
+      { name: 'Add Melted Cheese', price: 30 },
+      { name: 'Add Pan-fried Sausages', price: 50 }
+    ]
   },
   {
     id: 'm6',
@@ -74,7 +101,12 @@ const sampleMeals = [
     prepTime: '2 min',
     stock: 'Available',
     protein: '12g', carbs: '28g', fats: '11g', tag: 'Halal',
-    description: 'Two golden crispy pastry pockets filled with spiced minced beef and green peas.'
+    description: 'Two golden crispy pastry pockets filled with spiced minced beef and green peas.',
+    addons: [
+      { name: 'Add Extra Samosa (+1pc)', price: 50 },
+      { name: 'Tamarind Chutney Dip', price: 20 },
+      { name: 'Tangy Mint Sauce', price: 15 }
+    ]
   },
   {
     id: 'm7',
@@ -86,7 +118,13 @@ const sampleMeals = [
     prepTime: '7 min',
     stock: 'Available',
     protein: '35g', carbs: '68g', fats: '14g', tag: 'Halal',
-    description: 'Traditional slow-cooked tender beef curry served with warm white cornmeal ugali and sauteed spinach.'
+    description: 'Traditional slow-cooked tender beef curry served with warm white cornmeal ugali and sauteed spinach.',
+    addons: [
+      { name: 'Extra Warm Ugali Block', price: 30 },
+      { name: 'Extra Sauteed Sukuma Wiki', price: 25 },
+      { name: 'Add Avocado Slice', price: 40 },
+      { name: 'Extra Beef Gravy Dip', price: 20 }
+    ]
   },
   {
     id: 'm8',
@@ -98,7 +136,12 @@ const sampleMeals = [
     prepTime: '6 min',
     stock: 'Available',
     protein: '16g', carbs: '28g', fats: '17g', tag: 'Veggie',
-    description: 'Smashed ripe avocado on sourdough toast topped with a runny poached egg and chili flakes.'
+    description: 'Smashed ripe avocado on sourdough toast topped with a runny poached egg and chili flakes.',
+    addons: [
+      { name: 'Extra Runny Poached Egg', price: 30 },
+      { name: 'Add Smoked Salmon Slices', price: 80 },
+      { name: 'Extra Sourdough Toast Slice', price: 30 }
+    ]
   },
   {
     id: 'm9',
@@ -110,7 +153,13 @@ const sampleMeals = [
     prepTime: '5 min',
     stock: 'Available',
     protein: '20g', carbs: '65g', fats: '8g', tag: 'Vegan',
-    description: 'Hearty brown lentil stew simmered with coconut milk, garlic, and ginger, served with 2 soft chapatis.'
+    description: 'Hearty brown lentil stew simmered with coconut milk, garlic, and ginger, served with 2 soft chapatis.',
+    addons: [
+      { name: 'Extra Soft Chapati (+1pc)', price: 30 },
+      { name: 'Extra Coconut Lentil Bowl', price: 50 },
+      { name: 'Side of Fresh Kachumbari Salad', price: 25 },
+      { name: 'Fresh Avocado Slice', price: 40 }
+    ]
   },
   {
     id: 'm10',
@@ -122,7 +171,13 @@ const sampleMeals = [
     prepTime: '9 min',
     stock: 'Available',
     protein: '10g', carbs: '72g', fats: '9g', tag: 'Veggie',
-    description: 'Three fluffy golden buttermilk pancakes served with pure maple syrup and fresh banana slices.'
+    description: 'Three fluffy golden buttermilk pancakes served with pure maple syrup and fresh banana slices.',
+    addons: [
+      { name: 'Extra Pure Maple Syrup', price: 25 },
+      { name: 'Add Fluffy Whipped Cream', price: 30 },
+      { name: 'Add Extra Pancake (+1pc)', price: 40 },
+      { name: 'Side of Fresh Strawberries', price: 40 }
+    ]
   },
   {
     id: 'm11',
@@ -134,7 +189,12 @@ const sampleMeals = [
     prepTime: '14 min',
     stock: 'Low Stock',
     protein: '34g', carbs: '56g', fats: '15g', tag: 'Halal',
-    description: 'Pan-seared tilapia fillet simmered in aromatic Swahili coconut curry with fragrant basmati rice.'
+    description: 'Pan-seared tilapia fillet simmered in aromatic Swahili coconut curry with fragrant basmati rice.',
+    addons: [
+      { name: 'Extra Coconut Basmati Rice', price: 40 },
+      { name: 'Extra Swahili Curry Sauce', price: 30 },
+      { name: 'Side of Spicy Kachumbari', price: 25 }
+    ]
   },
   {
     id: 'm12',
@@ -146,7 +206,12 @@ const sampleMeals = [
     prepTime: '5 min',
     stock: 'Available',
     protein: '4g', carbs: '48g', fats: '19g', tag: 'Vegan',
-    description: 'Generous tray of golden hand-cut potato fries served with ketchup and spicy mayo dip.'
+    description: 'Generous tray of golden hand-cut potato fries served with ketchup and spicy mayo dip.',
+    addons: [
+      { name: 'Melted Cheddar Drizzle', price: 30 },
+      { name: 'Spicy Garlic Mayo Dip', price: 20 },
+      { name: 'Upgrade to Large Tray (+50%)', price: 40 }
+    ]
   },
   {
     id: 'm13',
@@ -158,7 +223,12 @@ const sampleMeals = [
     prepTime: '2 min',
     stock: 'Available',
     protein: '0g', carbs: '22g', fats: '0g', tag: 'Vegan',
-    description: 'Chilled organic hibiscus tea infused with fresh ginger, mint leaves, and natural honey.'
+    description: 'Chilled organic hibiscus tea infused with fresh ginger, mint leaves, and natural honey.',
+    addons: [
+      { name: 'Add Fresh Lemon Slices', price: 15 },
+      { name: 'Extra Mint & Honey Shot', price: 20 },
+      { name: 'Upgrade to Large Glass', price: 25 }
+    ]
   },
   {
     id: 'm14',
@@ -170,7 +240,12 @@ const sampleMeals = [
     prepTime: '10 min',
     stock: 'Available',
     protein: '22g', carbs: '45g', fats: '10g', tag: 'Vegan',
-    description: 'Crispy pan-fried tofu cubes glazed in sweet teriyaki sauce over brown rice and steamed broccoli.'
+    description: 'Crispy pan-fried tofu cubes glazed in sweet teriyaki sauce over brown rice and steamed broccoli.',
+    addons: [
+      { name: 'Extra Crispy Teriyaki Tofu', price: 50 },
+      { name: 'Extra Steamed Brown Rice', price: 35 },
+      { name: 'Side of Steamed Broccoli', price: 30 }
+    ]
   },
   {
     id: 'm15',
@@ -182,7 +257,12 @@ const sampleMeals = [
     prepTime: '15 min',
     stock: 'Available',
     protein: '45g', carbs: '80g', fats: '22g', tag: 'Premium',
-    description: 'Grilled salmon or steak option with roast potatoes, grilled vegetables, fresh juice, and dessert.'
+    description: 'Grilled salmon or steak option with roast potatoes, grilled vegetables, fresh juice, and dessert.',
+    addons: [
+      { name: 'Upgrade to Grilled Salmon Fillet', price: 100 },
+      { name: 'Extra Executive Side Salad', price: 40 },
+      { name: 'Add Chocolate Cake Slice', price: 60 }
+    ]
   }
 ];
 
@@ -190,7 +270,7 @@ class CafeteriaApp {
   constructor() {
     this.currentScreen = 'screenHome';
     this.cart = [];
-    this.favorites = ['m1', 'm3', 'm7'];
+    this.favorites = ['m1', 'm3', 'm7', 'm9'];
     this.loyaltyPoints = 240;
     this.useLoyaltyDiscount = false;
     this.isGroupOrder = false;
@@ -205,13 +285,13 @@ class CafeteriaApp {
       statusStep: 2,
     };
     this.currentDetailItem = sampleMeals[0];
-    this.currentCustomization = { portion: 'Standard', extras: [], instructions: '', extraCost: 0 };
+    this.currentCustomization = { portion: 'Standard', selectedAddons: [], instructions: '', extraCost: 0 };
     this.historyOrders = [
       {
         id: '#1044',
         date: 'Yesterday, 1:15 PM',
-        items: '1x Grilled Chicken & Rice',
-        total: 250,
+        items: '1x Lentil Curry + 1x Extra Chapati',
+        total: 190,
         status: 'Completed',
         venue: 'Main Cafeteria'
       },
@@ -301,7 +381,7 @@ class CafeteriaApp {
       'screenLogin': 'Authentication',
       'screenMenu': 'Cafeteria Menu (15+ Items)',
       'screenMealDetails': 'Meal Overview & Nutrition',
-      'screenCustomize': 'Customize Options',
+      'screenCustomize': 'Dish Add-Ons & Extras',
       'screenCart': 'Shopping Cart & Loyalty',
       'screenTimeSelect': 'Pickup Details',
       'screenPayment': 'Payment Interface',
@@ -466,16 +546,41 @@ class CafeteriaApp {
 
   adjustDetailQty(delta) {
     const qtySpan = document.getElementById('detailQty');
-    let cur = parseInt(qtySpan.innerText) + delta;
+    let cur = parseInt(qtySpan?.innerText || '1') + delta;
     if (cur < 1) cur = 1;
     qtySpan.innerText = cur;
 
-    const totalPrice = cur * (this.currentDetailItem.price + this.currentCustomization.extraCost);
-    document.getElementById('detailAddToCartBtn').innerText = `Add to Cart - KSh ${totalPrice}`;
+    const totalPrice = cur * (this.currentDetailItem.price + (this.currentCustomization.extraCost || 0));
+    const btn = document.getElementById('detailAddToCartBtn');
+    if (btn) btn.innerText = `Add to Cart - KSh ${totalPrice}`;
   }
 
   openCustomizeModal() {
     document.getElementById('customizeMealName').innerText = this.currentDetailItem.name;
+
+    // Render dish-specific add-ons dynamically!
+    const container = document.getElementById('dynamicAddonsContainer');
+    const groupTitle = document.getElementById('addonsGroupTitle');
+    
+    if (groupTitle) {
+      groupTitle.innerText = `Add-Ons & Extras for ${this.currentDetailItem.name}`;
+    }
+
+    if (container) {
+      const addons = this.currentDetailItem.addons || [];
+      if (addons.length === 0) {
+        container.innerHTML = '<p class="subtitle" style="padding:10px 0;">No extra add-ons available for this item.</p>';
+      } else {
+        container.innerHTML = addons.map((a, idx) => `
+          <label class="checkbox-option">
+            <input type="checkbox" class="dish-addon-check" data-price="${a.price}" data-name="${a.name}" onchange="app.updateCustomizeTotal()">
+            <span>${a.name}</span>
+            <strong>+ KSh ${a.price}</strong>
+          </label>
+        `).join('');
+      }
+    }
+
     this.navigateTo('screenCustomize');
     this.updateCustomizeTotal();
   }
@@ -485,27 +590,44 @@ class CafeteriaApp {
     const portion = document.querySelector('input[name="portion"]:checked')?.value || 'Standard';
     if (portion === 'Large') extraCost += 50;
 
-    if (document.getElementById('addSauce')?.checked) extraCost += 20;
-    if (document.getElementById('addEgg')?.checked) extraCost += 30;
-    if (document.getElementById('addAvocado')?.checked) extraCost += 40;
+    const selectedAddonNames = [];
+    document.querySelectorAll('.dish-addon-check:checked').forEach(chk => {
+      const p = parseInt(chk.getAttribute('data-price') || '0');
+      const n = chk.getAttribute('data-name') || '';
+      extraCost += p;
+      selectedAddonNames.push(n);
+    });
 
     this.currentCustomization.extraCost = extraCost;
-    const total = (this.currentDetailItem.price + extraCost) * parseInt(document.getElementById('detailQty').innerText);
-    document.getElementById('saveCustomizationBtn').innerText = `Save Customization - KSh ${total}`;
+    this.currentCustomization.selectedAddons = selectedAddonNames;
+
+    const qty = parseInt(document.getElementById('detailQty')?.innerText || '1');
+    const total = (this.currentDetailItem.price + extraCost) * qty;
+
+    const btn = document.getElementById('saveCustomizationBtn');
+    if (btn) btn.innerText = `Save Customization - KSh ${total}`;
+
+    const detailBtn = document.getElementById('detailAddToCartBtn');
+    if (detailBtn) detailBtn.innerText = `Add to Cart - KSh ${total}`;
   }
 
   confirmCustomization() {
-    this.showToast('Customization Saved ✓');
+    const count = this.currentCustomization.selectedAddons?.length || 0;
+    this.showToast(`Saved Customization (${count} add-ons selected) ✓`);
     this.navigateTo('screenMealDetails');
   }
 
   addCurrentDetailToCart() {
-    const qty = parseInt(document.getElementById('detailQty').innerText);
+    const qty = parseInt(document.getElementById('detailQty')?.innerText || '1');
     const itemTotal = (this.currentDetailItem.price + this.currentCustomization.extraCost) * qty;
+
+    const addonText = (this.currentCustomization.selectedAddons && this.currentCustomization.selectedAddons.length > 0)
+      ? ` (${this.currentCustomization.selectedAddons.join(', ')})`
+      : '';
 
     const cartItem = {
       id: this.currentDetailItem.id,
-      name: this.currentDetailItem.name,
+      name: this.currentDetailItem.name + addonText,
       basePrice: this.currentDetailItem.price,
       qty: qty,
       extraCost: this.currentCustomization.extraCost,
@@ -514,7 +636,7 @@ class CafeteriaApp {
     };
 
     this.cart.push(cartItem);
-    this.showToast(`Added ${qty}x ${cartItem.name} to Cart 🛒`);
+    this.showToast(`Added ${qty}x ${this.currentDetailItem.name} to Cart 🛒`);
     this.renderCart();
     this.navigateTo('screenCart');
   }
@@ -554,7 +676,7 @@ class CafeteriaApp {
         <div class="cart-item-card">
           <div class="cart-item-info">
             <h4>${item.emoji} ${item.name}</h4>
-            <p>Qty: ${item.qty} ${item.extraCost > 0 ? '(Customized)' : ''}</p>
+            <p>Qty: ${item.qty} ${item.extraCost > 0 ? '(Customized Extras)' : ''}</p>
           </div>
           <div class="cart-item-price">KSh ${item.total}</div>
           <button class="icon-btn" onclick="app.removeCartItem(${idx})">🗑️</button>
@@ -583,13 +705,17 @@ class CafeteriaApp {
     const meal = sampleMeals.find(m => m.id === mealId);
     if (!meal) return;
 
+    // Standard chapati add-on pre-populated for Lentils
+    const defaultAddonText = (meal.id === 'm9') ? ' (Extra Soft Chapati)' : '';
+    const defaultAddonCost = (meal.id === 'm9') ? 30 : 0;
+
     this.cart = [{
       id: meal.id,
-      name: meal.name,
+      name: meal.name + defaultAddonText,
       basePrice: meal.price,
       qty: 1,
-      extraCost: 0,
-      total: meal.price,
+      extraCost: defaultAddonCost,
+      total: meal.price + defaultAddonCost,
       emoji: meal.emoji
     }];
 
@@ -692,11 +818,11 @@ class CafeteriaApp {
         <div class="receipt-line"><span>Date: Aug 12, 2026</span> <span>12:30 PM</span></div>
         <div class="receipt-line"><span>Venue: Main Cafeteria</span> <span>Window B3</span></div>
         <hr style="margin:6px 0; border:none; border-top:1px dashed #000;">
-        <div class="receipt-line"><span>1x Grilled Chicken & Rice</span> <span>KSh 250</span></div>
-        <div class="receipt-line"><span>+ Large Portion & Sauce</span> <span>KSh 70</span></div>
+        <div class="receipt-line"><span>1x Lentil Curry + Chapati</span> <span>KSh 190</span></div>
+        <div class="receipt-line"><span>+ Extra Chapati Add-on</span> <span>KSh 30</span></div>
         <hr style="margin:6px 0; border:none; border-top:1px dashed #000;">
-        <div class="receipt-line"><strong>Total Paid (M-Pesa)</strong> <strong>KSh 320</strong></div>
-        <div class="receipt-line"><span>Loyalty Pts Earned:</span> <span>+30 pts</span></div>
+        <div class="receipt-line"><strong>Total Paid (M-Pesa)</strong> <strong>KSh 220</strong></div>
+        <div class="receipt-line"><span>Loyalty Pts Earned:</span> <span>+22 pts</span></div>
       `;
       modal.style.display = 'flex';
     }
@@ -738,7 +864,7 @@ class CafeteriaApp {
           <span style="font-size:11px; color: var(--text-muted);">${o.date} • ${o.venue}</span>
           <div>
             <button class="btn-mini" style="background:var(--secondary);" onclick="app.openDigitalReceipt('${o.id}')">Receipt</button>
-            <button class="btn-mini" onclick="app.quickReorder('m1')">Reorder</button>
+            <button class="btn-mini" onclick="app.quickReorder('m9')">Reorder</button>
           </div>
         </div>
       </div>
@@ -818,4 +944,3 @@ class CafeteriaApp {
 
 // Global Instance
 window.app = new CafeteriaApp();
-
