@@ -1,6 +1,6 @@
 /* ==========================================================================
-   SMART CAFETERIA ORDERING MOBILE APPLICATION - JS STATE ENGINE
-   Manages all 15 Screens, 3 Scenarios, Cart Engine, & Live Tracking Stepper
+   SMART CAFETERIA ORDERING MOBILE APPLICATION - JS STATE ENGINE v2.5
+   15+ Varied Menu Items, Loyalty Rewards, Filters, & Digital Receipts
    ========================================================================== */
 
 const sampleMeals = [
@@ -13,6 +13,7 @@ const sampleMeals = [
     calories: 520,
     prepTime: '10 min',
     stock: 'Available',
+    protein: '38g', carbs: '62g', fats: '12g', tag: 'Halal',
     description: 'Freshly grilled marinated chicken breast served with steamed savory turmeric rice and fresh garden salad.'
   },
   {
@@ -23,7 +24,8 @@ const sampleMeals = [
     emoji: '🍔',
     calories: 680,
     prepTime: '15 min',
-    stock: 'Sold Out', // FR-22 Error Prevention demo
+    stock: 'Sold Out',
+    protein: '32g', carbs: '75g', fats: '28g', tag: 'Combo',
     description: '100% prime beef patty with melted cheese, lettuce, tomato, and seasoned crispy french fries.'
   },
   {
@@ -35,17 +37,19 @@ const sampleMeals = [
     calories: 140,
     prepTime: '3 min',
     stock: 'Available',
+    protein: '1g', carbs: '32g', fats: '0g', tag: 'Vegan',
     description: 'Freshly squeezed natural mango and passion fruit juice blend with zero added sugar.'
   },
   {
     id: 'm4',
     name: 'Vegetarian Stir-Fry Noodles',
     price: 220,
-    category: 'Lunch',
+    category: 'Vegetarian',
     emoji: '🍜',
     calories: 410,
     prepTime: '12 min',
     stock: 'Low Stock',
+    protein: '14g', carbs: '58g', fats: '9g', tag: 'Veggie',
     description: 'Wok-tossed egg noodles with crisp vegetables, sesame oil, and savory soy garlic sauce.'
   },
   {
@@ -57,18 +61,128 @@ const sampleMeals = [
     calories: 380,
     prepTime: '8 min',
     stock: 'Available',
+    protein: '22g', carbs: '30g', fats: '18g', tag: 'Halal',
     description: 'Three-egg fluffy omelette with diced bell peppers, onions, tomatoes, and toasted whole wheat bread.'
   },
   {
     id: 'm6',
-    name: 'Crispy Samosa Pair',
+    name: 'Crispy Samosa Pair (2pcs)',
     price: 100,
     category: 'Snacks',
     emoji: '🥟',
     calories: 260,
     prepTime: '2 min',
     stock: 'Available',
-    description: 'Two golden pastry pockets filled with spiced minced beef and green peas.'
+    protein: '12g', carbs: '28g', fats: '11g', tag: 'Halal',
+    description: 'Two golden crispy pastry pockets filled with spiced minced beef and green peas.'
+  },
+  {
+    id: 'm7',
+    name: 'Beef Stew & Ugali with Sukuma',
+    price: 220,
+    category: 'Lunch',
+    emoji: '🍲',
+    calories: 590,
+    prepTime: '7 min',
+    stock: 'Available',
+    protein: '35g', carbs: '68g', fats: '14g', tag: 'Halal',
+    description: 'Traditional slow-cooked tender beef curry served with warm white cornmeal ugali and sauteed spinach.'
+  },
+  {
+    id: 'm8',
+    name: 'Avocado Toast & Poached Egg',
+    price: 200,
+    category: 'Breakfast',
+    emoji: '🥑',
+    calories: 340,
+    prepTime: '6 min',
+    stock: 'Available',
+    protein: '16g', carbs: '28g', fats: '17g', tag: 'Veggie',
+    description: 'Smashed ripe avocado on sourdough toast topped with a runny poached egg and chili flakes.'
+  },
+  {
+    id: 'm9',
+    name: 'Lentil Curry (Kamande) & Chapati',
+    price: 160,
+    category: 'Vegetarian',
+    emoji: '🫓',
+    calories: 450,
+    prepTime: '5 min',
+    stock: 'Available',
+    protein: '20g', carbs: '65g', fats: '8g', tag: 'Vegan',
+    description: 'Hearty brown lentil stew simmered with coconut milk, garlic, and ginger, served with 2 soft chapatis.'
+  },
+  {
+    id: 'm10',
+    name: 'Pancakes with Maple Syrup & Fruit',
+    price: 190,
+    category: 'Breakfast',
+    emoji: '🥞',
+    calories: 420,
+    prepTime: '9 min',
+    stock: 'Available',
+    protein: '10g', carbs: '72g', fats: '9g', tag: 'Veggie',
+    description: 'Three fluffy golden buttermilk pancakes served with pure maple syrup and fresh banana slices.'
+  },
+  {
+    id: 'm11',
+    name: 'Fish Curry & Coconut Rice',
+    price: 280,
+    category: 'Lunch',
+    emoji: '🍛',
+    calories: 510,
+    prepTime: '14 min',
+    stock: 'Low Stock',
+    protein: '34g', carbs: '56g', fats: '15g', tag: 'Halal',
+    description: 'Pan-seared tilapia fillet simmered in aromatic Swahili coconut curry with fragrant basmati rice.'
+  },
+  {
+    id: 'm12',
+    name: 'Crispy French Fries Tray',
+    price: 120,
+    category: 'Snacks',
+    emoji: '🍟',
+    calories: 380,
+    prepTime: '5 min',
+    stock: 'Available',
+    protein: '4g', carbs: '48g', fats: '19g', tag: 'Vegan',
+    description: 'Generous tray of golden hand-cut potato fries served with ketchup and spicy mayo dip.'
+  },
+  {
+    id: 'm13',
+    name: 'Iced Hibiscus Zobo Tea',
+    price: 70,
+    category: 'Drinks',
+    emoji: '🍹',
+    calories: 90,
+    prepTime: '2 min',
+    stock: 'Available',
+    protein: '0g', carbs: '22g', fats: '0g', tag: 'Vegan',
+    description: 'Chilled organic hibiscus tea infused with fresh ginger, mint leaves, and natural honey.'
+  },
+  {
+    id: 'm14',
+    name: 'Tofu Teriyaki Bowl',
+    price: 240,
+    category: 'Vegetarian',
+    emoji: '🥗',
+    calories: 390,
+    prepTime: '10 min',
+    stock: 'Available',
+    protein: '22g', carbs: '45g', fats: '10g', tag: 'Vegan',
+    description: 'Crispy pan-fried tofu cubes glazed in sweet teriyaki sauce over brown rice and steamed broccoli.'
+  },
+  {
+    id: 'm15',
+    name: 'Staff Executive Lunch Box',
+    price: 450,
+    category: 'Combos',
+    emoji: '💼',
+    calories: 750,
+    prepTime: '15 min',
+    stock: 'Available',
+    protein: '45g', carbs: '80g', fats: '22g', tag: 'Premium',
+    description: 'Grilled salmon or steak option with roast potatoes, grilled vegetables, fresh juice, and dessert.'
   }
 ];
 
@@ -76,7 +190,11 @@ class CafeteriaApp {
   constructor() {
     this.currentScreen = 'screenHome';
     this.cart = [];
-    this.favorites = ['m1', 'm3'];
+    this.favorites = ['m1', 'm3', 'm7'];
+    this.loyaltyPoints = 240;
+    this.useLoyaltyDiscount = false;
+    this.isGroupOrder = false;
+
     this.activeOrder = {
       id: '#1045',
       items: [{ name: 'Grilled Chicken & Savory Rice', qty: 1, price: 250 }],
@@ -84,7 +202,7 @@ class CafeteriaApp {
       venue: 'Main Cafeteria',
       timeSlot: '12:30 PM',
       paymentMethod: 'M-Pesa',
-      statusStep: 2, // 1: Received, 2: Prep, 3: Ready, 4: Collected
+      statusStep: 2,
     };
     this.currentDetailItem = sampleMeals[0];
     this.currentCustomization = { portion: 'Standard', extras: [], instructions: '', extraCost: 0 };
@@ -100,7 +218,7 @@ class CafeteriaApp {
       {
         id: '#1020',
         date: 'Aug 10, 2026',
-        items: '1x Veggie Noodles + 1x Juice',
+        items: '1x Beef Stew + 1x Mango Juice',
         total: 300,
         status: 'Completed',
         venue: 'Student Centre'
@@ -124,12 +242,12 @@ class CafeteriaApp {
     const now = new Date();
     const hrs = String(now.getHours()).padStart(2, '0');
     const mins = String(now.getMinutes()).padStart(2, '0');
-    document.getElementById('clock').innerText = `${hrs}:${mins}`;
+    const clock = document.getElementById('clock');
+    if (clock) clock.innerText = `${hrs}:${mins}`;
   }
 
   setupEventListeners() {
-    // Mode toggles
-    document.getElementById('wireframeToggle').addEventListener('change', (e) => {
+    document.getElementById('wireframeToggle')?.addEventListener('change', (e) => {
       if (e.target.checked) {
         document.body.classList.add('mode-wireframe');
         document.body.classList.remove('mode-polished');
@@ -139,46 +257,38 @@ class CafeteriaApp {
       }
     });
 
-    document.getElementById('versionToggle').addEventListener('change', (e) => {
+    document.getElementById('versionToggle')?.addEventListener('change', (e) => {
       const isV2 = e.target.checked;
       const banner = document.getElementById('activeOrderBanner');
-      if (banner) {
-        banner.style.display = isV2 ? 'block' : 'none';
-      }
-      this.showToast(isV2 ? 'Switched to V2 Prototype (Active Order Banner Enabled)' : 'Switched to V1 Prototype (Active Order Banner Hidden)');
+      if (banner) banner.style.display = isV2 ? 'block' : 'none';
+      this.showToast(isV2 ? 'V2 Prototype Active (Home Order Status Banner Enabled)' : 'V1 Prototype Active (Order Banner Hidden)');
     });
 
-    document.getElementById('headerBackBtn').addEventListener('click', () => {
+    document.getElementById('headerBackBtn')?.addEventListener('click', () => {
       this.navigateTo('screenHome');
     });
   }
 
   navigateTo(screenId) {
-    // Hide all screens
-    const screens = document.querySelectorAll('.screen');
-    screens.forEach(s => s.style.display = 'none');
-
-    // Show target screen
+    document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
     const target = document.getElementById(screenId);
     if (target) {
       target.style.display = 'block';
       this.currentScreen = screenId;
     }
 
-    // Update Header
     const backBtn = document.getElementById('headerBackBtn');
     const title = document.getElementById('headerTitle');
 
     if (screenId === 'screenHome') {
-      backBtn.style.display = 'none';
-      title.innerText = 'Smart Cafeteria';
+      if (backBtn) backBtn.style.display = 'none';
+      if (title) title.innerText = 'Smart Cafeteria';
       this.setActiveNav('navHome');
     } else {
-      backBtn.style.display = 'flex';
-      title.innerText = this.getScreenTitle(screenId);
+      if (backBtn) backBtn.style.display = 'flex';
+      if (title) title.innerText = this.getScreenTitle(screenId);
     }
 
-    // Nav bar highlights
     if (screenId === 'screenMenu') this.setActiveNav('navMenu');
     if (screenId === 'screenHistory') this.setActiveNav('navOrders');
     if (screenId === 'screenFavorites') this.setActiveNav('navFavorites');
@@ -189,18 +299,18 @@ class CafeteriaApp {
     const titles = {
       'screenSplash': 'Welcome',
       'screenLogin': 'Authentication',
-      'screenMenu': 'Cafeteria Menu',
-      'screenMealDetails': 'Meal Overview',
-      'screenCustomize': 'Customize Order',
-      'screenCart': 'Shopping Cart',
+      'screenMenu': 'Cafeteria Menu (15+ Items)',
+      'screenMealDetails': 'Meal Overview & Nutrition',
+      'screenCustomize': 'Customize Options',
+      'screenCart': 'Shopping Cart & Loyalty',
       'screenTimeSelect': 'Pickup Details',
       'screenPayment': 'Payment Interface',
       'screenConfirmation': 'Order Confirmed',
-      'screenTracking': 'Live Order Stepper',
+      'screenTracking': 'Live Kitchen Stepper',
       'screenReady': 'Ready for Pickup',
       'screenHistory': 'Order Receipts',
       'screenFavorites': 'Saved Meals',
-      'screenProfile': 'Account Profile'
+      'screenProfile': 'Account & Points'
     };
     return titles[id] || 'Smart Cafeteria';
   }
@@ -213,6 +323,7 @@ class CafeteriaApp {
 
   showToast(msg) {
     const container = document.getElementById('toastContainer');
+    if (!container) return;
     const toast = document.createElement('div');
     toast.className = 'toast';
     toast.innerHTML = `<span>ℹ️</span> <div>${msg}</div>`;
@@ -220,9 +331,26 @@ class CafeteriaApp {
     setTimeout(() => toast.remove(), 3000);
   }
 
+  changeVenue(val) {
+    const badge = document.getElementById('venueCrowdBadge');
+    const busyness = {
+      'Main Cafeteria': '🔥 65% Busy (Est 10m)',
+      'Student Centre': '🌿 30% Quiet (Est 5m)',
+      'Engineering Dining': '⚡ 45% Moderate',
+      'Staff Dining': '👔 20% Quiet'
+    };
+    if (badge) badge.innerText = busyness[val] || '🔥 50% Busy';
+    this.showToast(`Updated pickup venue to ${val}`);
+  }
+
   renderMealsGrid(containerId, meals) {
     const container = document.getElementById(containerId);
     if (!container) return;
+
+    if (meals.length === 0) {
+      container.innerHTML = '<p style="grid-column: span 2; text-align:center; padding: 20px; color: var(--text-muted);">No meals match your active search filters.</p>';
+      return;
+    }
 
     container.innerHTML = meals.map(m => {
       const isFav = this.favorites.includes(m.id);
@@ -236,7 +364,10 @@ class CafeteriaApp {
           </button>
           <div class="meal-card-icon">${m.emoji}</div>
           <div class="meal-card-title">${m.name}</div>
-          <span class="badge ${badgeClass}" style="align-self: flex-start; margin-bottom: 4px;">${m.stock}</span>
+          <div style="display:flex; gap:4px; margin-bottom:4px;">
+            <span class="badge ${badgeClass}">${m.stock}</span>
+            <span class="badge badge-neutral">${m.tag}</span>
+          </div>
           <div class="meal-card-price">KSh ${m.price}</div>
         </div>
       `;
@@ -246,7 +377,8 @@ class CafeteriaApp {
   filterMeals(query) {
     const filtered = sampleMeals.filter(m => 
       m.name.toLowerCase().includes(query.toLowerCase()) || 
-      m.category.toLowerCase().includes(query.toLowerCase())
+      m.category.toLowerCase().includes(query.toLowerCase()) ||
+      m.tag.toLowerCase().includes(query.toLowerCase())
     );
     this.renderMealsGrid('homeMealsGrid', filtered);
     this.renderMealsGrid('fullMenuGrid', filtered);
@@ -271,7 +403,7 @@ class CafeteriaApp {
     if (!item) return;
 
     if (item.stock === 'Sold Out') {
-      this.showToast('⚠️ Error: This meal is currently Sold Out and cannot be ordered.');
+      this.showToast('⚠️ FR-22 Error Prevention: Sold Out items cannot be ordered.');
       return;
     }
 
@@ -281,6 +413,14 @@ class CafeteriaApp {
     document.getElementById('detailEmoji').innerText = item.emoji;
     document.getElementById('detailDesc').innerText = item.description;
     document.getElementById('detailStockBadge').innerText = item.stock;
+    document.getElementById('detailCalorieBadge').innerText = `🔥 ${item.calories} kcal`;
+    document.getElementById('detailPrepBadge').innerText = `⏱️ ${item.prepTime}`;
+
+    document.getElementById('nutriProtein').innerText = item.protein;
+    document.getElementById('nutriCarbs').innerText = item.carbs;
+    document.getElementById('nutriFats').innerText = item.fats;
+    document.getElementById('nutriTag').innerText = item.tag;
+
     document.getElementById('detailQty').innerText = 1;
 
     const favBtn = document.getElementById('detailFavBtn');
@@ -330,7 +470,7 @@ class CafeteriaApp {
     if (cur < 1) cur = 1;
     qtySpan.innerText = cur;
 
-    const totalPrice = cur * this.currentDetailItem.price;
+    const totalPrice = cur * (this.currentDetailItem.price + this.currentCustomization.extraCost);
     document.getElementById('detailAddToCartBtn').innerText = `Add to Cart - KSh ${totalPrice}`;
   }
 
@@ -379,6 +519,20 @@ class CafeteriaApp {
     this.navigateTo('screenCart');
   }
 
+  toggleGroupOrder() {
+    this.isGroupOrder = !this.isGroupOrder;
+    const text = document.getElementById('groupOrderText');
+    if (text) {
+      text.innerText = this.isGroupOrder ? '👥 Shared Group Tray Active (2 Classmates Joined)' : '👥 Individual Order Mode (Tap to enable Group Tray)';
+    }
+    this.showToast(this.isGroupOrder ? 'Group Order Mode Enabled' : 'Individual Order Mode');
+  }
+
+  toggleLoyaltyDiscount() {
+    this.useLoyaltyDiscount = document.getElementById('usePointsCheck')?.checked || false;
+    this.renderCart();
+  }
+
   renderCart() {
     const container = document.getElementById('cartItemsList');
     if (!container) return;
@@ -408,9 +562,15 @@ class CafeteriaApp {
       `;
     }).join('');
 
+    let discount = this.useLoyaltyDiscount ? 50 : 0;
+    let finalTotal = Math.max(0, subtotal - discount);
+
     document.getElementById('cartSubtotal').innerText = `KSh ${subtotal}`;
-    document.getElementById('cartTotal').innerText = `KSh ${subtotal}`;
-    document.getElementById('paymentTotalAmount').innerText = `KSh ${subtotal}`;
+    const discRow = document.getElementById('discountRow');
+    if (discRow) discRow.style.display = this.useLoyaltyDiscount ? 'flex' : 'none';
+    
+    document.getElementById('cartTotal').innerText = `KSh ${finalTotal}`;
+    document.getElementById('paymentTotalAmount').innerText = `KSh ${finalTotal}`;
   }
 
   removeCartItem(idx) {
@@ -474,7 +634,7 @@ class CafeteriaApp {
     setTimeout(() => {
       document.getElementById('confVenue').innerText = `${this.activeOrder.venue} (Express Window)`;
       document.getElementById('confTime').innerText = this.activeOrder.timeSlot;
-      document.getElementById('confPayment').innerText = `Paid (KSh ${document.getElementById('cartTotal').innerText})`;
+      document.getElementById('confPayment').innerText = `Paid (${document.getElementById('cartTotal').innerText})`;
       
       this.activeOrder.statusStep = 1;
       this.updateStepperVisuals();
@@ -488,10 +648,10 @@ class CafeteriaApp {
       this.updateStepperVisuals();
 
       if (this.activeOrder.statusStep === 3) {
-        this.showToast('🔔 PUSH NOTIFICATION: Your food is Ready at Shelf B3!');
+        this.showToast('🔔 PUSH ALERTS: Order #1045 is READY at Shelf B3!');
         this.navigateTo('screenReady');
       } else if (this.activeOrder.statusStep === 4) {
-        this.showToast('Order Completed! Please leave a rating.');
+        this.showToast('Order Completed! Please leave feedback.');
         document.getElementById('ratingModal').style.display = 'flex';
       }
     } else {
@@ -521,6 +681,25 @@ class CafeteriaApp {
     this.activeOrder.statusStep = 4;
     this.updateStepperVisuals();
     document.getElementById('ratingModal').style.display = 'flex';
+  }
+
+  openDigitalReceipt(orderId) {
+    const modal = document.getElementById('receiptModal');
+    const content = document.getElementById('receiptBoxContent');
+    if (modal && content) {
+      content.innerHTML = `
+        <div class="receipt-line"><strong>SMART CAFETERIA RECEIPT</strong> <span>#1045</span></div>
+        <div class="receipt-line"><span>Date: Aug 12, 2026</span> <span>12:30 PM</span></div>
+        <div class="receipt-line"><span>Venue: Main Cafeteria</span> <span>Window B3</span></div>
+        <hr style="margin:6px 0; border:none; border-top:1px dashed #000;">
+        <div class="receipt-line"><span>1x Grilled Chicken & Rice</span> <span>KSh 250</span></div>
+        <div class="receipt-line"><span>+ Large Portion & Sauce</span> <span>KSh 70</span></div>
+        <hr style="margin:6px 0; border:none; border-top:1px dashed #000;">
+        <div class="receipt-line"><strong>Total Paid (M-Pesa)</strong> <strong>KSh 320</strong></div>
+        <div class="receipt-line"><span>Loyalty Pts Earned:</span> <span>+30 pts</span></div>
+      `;
+      modal.style.display = 'flex';
+    }
   }
 
   setRating(stars) {
@@ -555,18 +734,47 @@ class CafeteriaApp {
           <span>${o.items}</span>
           <strong>KSh ${o.total}</strong>
         </div>
-        <div class="card-row">
+        <div class="card-row" style="margin-top:4px;">
           <span style="font-size:11px; color: var(--text-muted);">${o.date} • ${o.venue}</span>
-          <button class="btn-mini" onclick="app.quickReorder('m1')">Reorder</button>
+          <div>
+            <button class="btn-mini" style="background:var(--secondary);" onclick="app.openDigitalReceipt('${o.id}')">Receipt</button>
+            <button class="btn-mini" onclick="app.quickReorder('m1')">Reorder</button>
+          </div>
         </div>
       </div>
     `).join('');
   }
 
   openFilterModal() {
-    this.showToast('Filter options: Price < KSh 300, Dietary: Veg/Halal');
+    const modal = document.getElementById('filterModal');
+    if (modal) modal.style.display = 'flex';
+  }
+
+  closeFilterModal() {
+    const modal = document.getElementById('filterModal');
+    if (modal) modal.style.display = 'none';
+  }
+
+  applyFilters() {
+    const maxPrice = parseInt(document.getElementById('priceRange')?.value || 400);
+    const filterVeg = document.getElementById('filterVeg')?.checked || false;
+    const filterHalal = document.getElementById('filterHalal')?.checked || false;
+    const availableOnly = document.getElementById('filterAvailableOnly')?.checked || false;
+
+    const filtered = sampleMeals.filter(m => {
+      if (m.price > maxPrice) return false;
+      if (availableOnly && m.stock === 'Sold Out') return false;
+      if (filterVeg && !(m.tag === 'Veggie' || m.tag === 'Vegan')) return false;
+      if (filterHalal && m.tag !== 'Halal' && m.tag !== 'Vegan') return false;
+      return true;
+    });
+
+    this.renderMealsGrid('homeMealsGrid', filtered);
+    this.renderMealsGrid('fullMenuGrid', filtered);
+    this.closeFilterModal();
+    this.showToast(`Filters Applied: ${filtered.length} meals found under KSh ${maxPrice}`);
   }
 }
 
-// Global App Instance
+// Global Instance
 window.app = new CafeteriaApp();

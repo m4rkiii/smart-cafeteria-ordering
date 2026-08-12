@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Cafeteria Ordering - HCI Mobile Prototype</title>
-  <!-- Google Fonts: Inter -->
+  <title>Smart Cafeteria Ordering - HCI Mobile Prototype v2.5</title>
+  <!-- Google Fonts: Inter & Single Day -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Single+Day&display=swap" rel="stylesheet">
@@ -40,7 +40,7 @@
         <div class="icons">
           <span>📶</span>
           <span>📡</span>
-          <span>🔋 94%</span>
+          <span>🔋 96%</span>
         </div>
       </div>
 
@@ -48,7 +48,7 @@
       <header class="app-header" id="appHeader">
         <button class="icon-btn back-btn" id="headerBackBtn" style="display: none;">←</button>
         <div class="header-title" id="headerTitle">Smart Cafeteria</div>
-        <button class="icon-btn search-trigger-btn" id="headerSearchBtn">🔍</button>
+        <button class="icon-btn search-trigger-btn" id="headerSearchBtn" onclick="app.openFilterModal()">🔍</button>
       </header>
 
       <!-- App Notification Toast Container -->
@@ -62,12 +62,12 @@
           <div class="splash-content">
             <div class="splash-logo">🍱</div>
             <h1 class="splash-title">Smart Cafeteria</h1>
-            <p class="splash-subtitle">Order ahead, skip the queue, and collect your meal when it's ready.</p>
+            <p class="splash-subtitle">Order ahead, skip the queue, earn campus points, and collect your meal when ready.</p>
             <div class="splash-actions">
               <button class="btn btn-primary" onclick="app.navigateTo('screenHome')">Get Started</button>
               <button class="btn btn-secondary" onclick="app.navigateTo('screenLogin')">Sign In</button>
             </div>
-            <p class="splash-footer">University HCI Assignment Demo v2.0</p>
+            <p class="splash-footer">University HCI Assignment Demo v2.5</p>
           </div>
         </section>
 
@@ -98,18 +98,30 @@
 
         <!-- SCREEN 3: HOME DASHBOARD -->
         <section class="screen" id="screenHome" style="display:none;">
-          <!-- Location Picker Bar -->
+          <!-- Location & Crowd Density Indicator -->
           <div class="location-bar">
-            <span>📍 Pickup Venue:</span>
-            <select id="homeVenueSelect" class="venue-select" onchange="app.changeVenue(this.value)">
-              <option value="Main Cafeteria">Main Cafeteria (Express Window)</option>
-              <option value="Student Centre">Student Centre Food Court</option>
-              <option value="Engineering Dining">Engineering Snack Bar</option>
-              <option value="Staff Dining">Faculty & Staff Dining Room</option>
-            </select>
+            <div>
+              <span>📍 Venue:</span>
+              <select id="homeVenueSelect" class="venue-select" onchange="app.changeVenue(this.value)">
+                <option value="Main Cafeteria">Main Cafeteria</option>
+                <option value="Student Centre">Student Centre</option>
+                <option value="Engineering Dining">Engineering Bar</option>
+                <option value="Staff Dining">Staff Dining</option>
+              </select>
+            </div>
+            <div class="crowd-badge" id="venueCrowdBadge">🔥 65% Busy</div>
           </div>
 
-          <!-- Active Order Card (V2 Improvement) -->
+          <!-- Loyalty Reward Banner -->
+          <div class="loyalty-banner" onclick="app.showToast('You have 240 Campus Loyalty Points! Earn 10 pts per KSh 100.')">
+            <div class="loyalty-left">
+              <span>⭐ Campus Loyalty</span>
+              <strong>240 Points Available</strong>
+            </div>
+            <button class="loyalty-claim-btn">Redeem Vouchers</button>
+          </div>
+
+          <!-- Active Order Card (V2 Feature) -->
           <div class="active-order-banner" id="activeOrderBanner" onclick="app.navigateTo('screenTracking')">
             <div class="active-order-header">
               <span class="pulse-dot"></span>
@@ -131,25 +143,26 @@
             </div>
           </div>
 
-          <!-- Search Bar -->
+          <!-- Search Bar & Filters -->
           <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Search meals, drinks, combos..." onkeyup="app.filterMeals(this.value)">
-            <button class="filter-btn" onclick="app.openFilterModal()">⚙️</button>
+            <input type="text" id="searchInput" placeholder="Search 15+ meals, drinks, combos..." onkeyup="app.filterMeals(this.value)">
+            <button class="filter-btn" onclick="app.openFilterModal()">⚙️ Filters</button>
           </div>
 
           <!-- Category Pills -->
           <div class="categories-scroll" id="categoriesContainer">
-            <button class="cat-pill active" onclick="app.selectCategory('All')">All</button>
+            <button class="cat-pill active" onclick="app.selectCategory('All')">All (15)</button>
             <button class="cat-pill" onclick="app.selectCategory('Lunch')">🍱 Lunch</button>
             <button class="cat-pill" onclick="app.selectCategory('Breakfast')">🍳 Breakfast</button>
             <button class="cat-pill" onclick="app.selectCategory('Snacks')">🍟 Snacks</button>
             <button class="cat-pill" onclick="app.selectCategory('Drinks')">🥤 Drinks</button>
+            <button class="cat-pill" onclick="app.selectCategory('Vegetarian')">🥗 Veggie</button>
             <button class="cat-pill" onclick="app.selectCategory('Combos')">🔥 Deals</button>
           </div>
 
           <!-- Deals & Promotions Carousel -->
           <div class="section-title">
-            <h3>🔥 Today's Campus Specials</h3>
+            <h3>🔥 Campus Deals & Specials</h3>
           </div>
           <div class="promo-card" onclick="app.openMealDetails('m1')">
             <div class="promo-badge">20% OFF</div>
@@ -162,7 +175,7 @@
 
           <!-- Quick Reorder Tray -->
           <div class="section-title">
-            <h3>⚡ Quick Reorder</h3>
+            <h3>⚡ Rapid 1-Tap Reorder</h3>
           </div>
           <div class="quick-reorder-tray">
             <div class="quick-card" onclick="app.quickReorder('m1')">
@@ -170,6 +183,14 @@
               <div class="quick-text">
                 <strong>Chicken & Rice</strong>
                 <span>KSh 250</span>
+              </div>
+              <button class="btn-mini">+ Reorder</button>
+            </div>
+            <div class="quick-card" onclick="app.quickReorder('m7')">
+              <span class="quick-icon">🍲</span>
+              <div class="quick-text">
+                <strong>Beef Stew & Ugali</strong>
+                <span>KSh 220</span>
               </div>
               <button class="btn-mini">+ Reorder</button>
             </div>
@@ -185,7 +206,7 @@
 
           <!-- Recommended Meals Grid -->
           <div class="section-title">
-            <h3>Recommended for You</h3>
+            <h3>Explore Cafeteria Menu</h3>
           </div>
           <div class="meals-grid" id="homeMealsGrid">
             <!-- Meal Cards Rendered via JS -->
@@ -195,7 +216,8 @@
         <!-- SCREEN 4: MENU SCREEN -->
         <section class="screen" id="screenMenu" style="display:none;">
           <div class="search-box">
-            <input type="text" placeholder="Search menu..." onkeyup="app.filterMeals(this.value)">
+            <input type="text" placeholder="Search 15+ menu items..." onkeyup="app.filterMeals(this.value)">
+            <button class="filter-btn" onclick="app.openFilterModal()">⚙️</button>
           </div>
           <div class="categories-scroll">
             <button class="cat-pill active" onclick="app.selectCategory('All')">All Items</button>
@@ -203,6 +225,7 @@
             <button class="cat-pill" onclick="app.selectCategory('Breakfast')">Breakfast</button>
             <button class="cat-pill" onclick="app.selectCategory('Snacks')">Snacks</button>
             <button class="cat-pill" onclick="app.selectCategory('Drinks')">Drinks</button>
+            <button class="cat-pill" onclick="app.selectCategory('Vegetarian')">Vegetarian</button>
           </div>
           <div class="meals-grid" id="fullMenuGrid">
             <!-- Menu Cards Rendered via JS -->
@@ -222,9 +245,30 @@
             </div>
             <div class="badges-row">
               <span class="badge badge-success" id="detailStockBadge">Available</span>
-              <span class="badge badge-neutral">🔥 520 kcal</span>
-              <span class="badge badge-neutral">⏱️ 10 min prep</span>
+              <span class="badge badge-neutral" id="detailCalorieBadge">🔥 520 kcal</span>
+              <span class="badge badge-neutral" id="detailPrepBadge">⏱️ 10 min prep</span>
             </div>
+
+            <!-- Allergen & Nutrition Cards -->
+            <div class="nutrition-card">
+              <div class="nutri-item">
+                <span>Protein</span>
+                <strong id="nutriProtein">38g</strong>
+              </div>
+              <div class="nutri-item">
+                <span>Carbs</span>
+                <strong id="nutriCarbs">62g</strong>
+              </div>
+              <div class="nutri-item">
+                <span>Fats</span>
+                <strong id="nutriFats">12g</strong>
+              </div>
+              <div class="nutri-item">
+                <span>Dietary</span>
+                <strong id="nutriTag">Halal</strong>
+              </div>
+            </div>
+
             <p class="detail-description" id="detailDesc">Freshly grilled marinated chicken breast served with steamed savory turmeric rice and fresh kitchen garden salad.</p>
             
             <div class="quantity-row">
@@ -237,7 +281,7 @@
             </div>
 
             <div class="detail-actions">
-              <button class="btn btn-secondary" onclick="app.openCustomizeModal()">⚙️ Customize Options</button>
+              <button class="btn btn-secondary" onclick="app.openCustomizeModal()">⚙️ Customize Options & Extras</button>
               <button class="btn btn-primary" id="detailAddToCartBtn" onclick="app.addCurrentDetailToCart()">Add to Cart - KSh 250</button>
             </div>
           </div>
@@ -287,7 +331,7 @@
             <!-- Special Instructions -->
             <div class="custom-group">
               <label class="custom-title">Special Kitchen Instructions</label>
-              <textarea id="customInstructions" class="input-control" placeholder="e.g. No onions, dressing on the side..."></textarea>
+              <textarea id="customInstructions" class="input-control" placeholder="e.g. No onions, sauce on the side..."></textarea>
             </div>
           </div>
           <div class="customize-footer">
@@ -298,14 +342,28 @@
         <!-- SCREEN 7: SHOPPING CART -->
         <section class="screen" id="screenCart" style="display:none;">
           <div class="cart-wrapper">
+            <!-- Shared / Group Order Toggle -->
+            <div class="group-order-banner" onclick="app.toggleGroupOrder()">
+              <span id="groupOrderText">👥 Individual Order Mode (Tap to enable Group Tray)</span>
+            </div>
+
             <div id="cartItemsList" class="cart-items-list">
               <!-- Cart Items Rendered via JS -->
             </div>
             
+            <!-- Redeem Points Block -->
+            <div class="redeem-block" id="redeemPointsBlock">
+              <label><input type="checkbox" id="usePointsCheck" onchange="app.toggleLoyaltyDiscount()"> Use 100 Campus Points for KSh 50 Discount</label>
+            </div>
+
             <div class="cart-summary" id="cartSummaryBlock">
               <div class="summary-row">
                 <span>Subtotal</span>
                 <span id="cartSubtotal">KSh 0</span>
+              </div>
+              <div class="summary-row" id="discountRow" style="display:none; color: var(--success);">
+                <span>Campus Points Discount</span>
+                <span id="cartDiscount">- KSh 50</span>
               </div>
               <div class="summary-row">
                 <span>Service Fee</span>
@@ -372,7 +430,7 @@
               </label>
               <label class="radio-option">
                 <input type="radio" name="paymethod" value="Campus Card" onchange="app.switchPayMethod('campus')">
-                <span>💳 Campus Smart Card</span>
+                <span>💳 Campus Smart Card Account</span>
               </label>
               <label class="radio-option">
                 <input type="radio" name="paymethod" value="Card" onchange="app.switchPayMethod('card')">
@@ -380,7 +438,7 @@
               </label>
               <label class="radio-option">
                 <input type="radio" name="paymethod" value="Cash" onchange="app.switchPayMethod('cash')">
-                <span>💵 Pay at Express Collection</span>
+                <span>💵 Pay at Express Collection Shelf</span>
               </label>
             </div>
 
@@ -414,6 +472,10 @@
                 <span>Payment Method:</span>
                 <strong id="confPayment">M-Pesa (KSh 320)</strong>
               </div>
+              <div class="card-row">
+                <span>Loyalty Points Earned:</span>
+                <strong style="color: var(--success);">+30 Campus Pts</strong>
+              </div>
             </div>
 
             <div class="qr-box">
@@ -422,7 +484,8 @@
             </div>
 
             <button class="btn btn-primary btn-block" onclick="app.navigateTo('screenTracking')">Track Order Status Live ➔</button>
-            <button class="btn btn-secondary btn-block" onclick="app.navigateTo('screenHome')">Back to Home</button>
+            <button class="btn btn-secondary btn-block" onclick="app.openDigitalReceipt('#1045')">View Digital Receipt 🧾</button>
+            <button class="btn btn-secondary btn-block" onclick="app.navigateTo('screenHome')" style="margin-top: 6px;">Back to Home</button>
           </div>
         </section>
 
@@ -447,7 +510,7 @@
                 <div class="step-circle">🍳</div>
                 <div class="step-content">
                   <strong>2. Preparing in Kitchen</strong>
-                  <span id="prepSubtext">Chef is grilling chicken (Est. 8 mins)</span>
+                  <span id="prepSubtext">Chef is preparing your meal (Est. 8 mins)</span>
                 </div>
               </div>
               <div class="stepper-item" id="step3">
@@ -466,9 +529,10 @@
               </div>
             </div>
 
-            <!-- Demo Simulation Button -->
+            <!-- Demo Simulation Controls -->
             <div class="demo-controls">
-              <button class="btn btn-secondary btn-block" onclick="app.simulateNextStatus()">🧪 Simulate Next Kitchen Stage</button>
+              <button class="btn btn-secondary btn-block" onclick="app.simulateNextStatus()">🧪 Advance Kitchen Stage</button>
+              <button class="btn btn-secondary btn-block" onclick="app.openDigitalReceipt('#1045')" style="margin-top: 6px;">View Itemized Receipt 🧾</button>
             </div>
           </div>
         </section>
@@ -521,6 +585,7 @@
             <div class="avatar">👨‍🎓</div>
             <h3>Alex Chen</h3>
             <p>Student ID: #8839201 • Computer Science</p>
+            <span class="badge badge-success" style="margin-top: 6px;">⭐ 240 Loyalty Points</span>
           </div>
 
           <div class="settings-list">
@@ -534,11 +599,11 @@
             </div>
             <div class="settings-item" onclick="alert('Dietary preferences set.')">
               <span>🥗 Dietary Preferences</span>
-              <strong>None ❯</strong>
+              <strong>Halal / Low Spice ❯</strong>
             </div>
             <div class="settings-item" onclick="app.navigateTo('screenHistory')">
               <span>📜 Past Order Receipts</span>
-              <strong>View All ❯</strong>
+              <strong>View Receipts ❯</strong>
             </div>
             <div class="settings-item" onclick="alert('Help FAQ: Contact cafeteria-support@univ.edu')">
               <span>❓ Help & Support FAQ</span>
@@ -573,6 +638,45 @@
         </button>
       </nav>
 
+    </div>
+  </div>
+
+  <!-- Advanced Search & Filter Modal (FR-05) -->
+  <div class="modal" id="filterModal" style="display:none;">
+    <div class="modal-content text-left">
+      <h3>⚙️ Filter Menu Options</h3>
+      
+      <div class="form-group" style="margin-top: 12px;">
+        <label>Max Price: <strong id="priceFilterVal">KSh 400</strong></label>
+        <input type="range" id="priceRange" min="50" max="500" step="10" value="400" oninput="document.getElementById('priceFilterVal').innerText = 'KSh ' + this.value">
+      </div>
+
+      <div class="form-group">
+        <label>Dietary Preferences</label>
+        <label class="checkbox-option"><input type="checkbox" id="filterVeg"> <span>Vegetarian / Vegan</span></label>
+        <label class="checkbox-option"><input type="checkbox" id="filterHalal" checked> <span>Halal Certified</span></label>
+      </div>
+
+      <div class="form-group">
+        <label>Stock Availability</label>
+        <label class="checkbox-option"><input type="checkbox" id="filterAvailableOnly" checked> <span>Hide Sold Out Items</span></label>
+      </div>
+
+      <div class="modal-actions" style="display:flex; gap:8px; margin-top: 16px;">
+        <button class="btn btn-secondary" style="flex:1;" onclick="app.closeFilterModal()">Cancel</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="app.applyFilters()">Apply Filters</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Digital Receipt Modal (FR-20) -->
+  <div class="modal" id="receiptModal" style="display:none;">
+    <div class="modal-content">
+      <h3>🧾 Digital Tax Receipt</h3>
+      <div class="receipt-box" id="receiptBoxContent">
+        <!-- Rendered via JS -->
+      </div>
+      <button class="btn btn-primary btn-block" onclick="document.getElementById('receiptModal').style.display='none'">Close Receipt</button>
     </div>
   </div>
 
